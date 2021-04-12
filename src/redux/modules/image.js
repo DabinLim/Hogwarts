@@ -18,7 +18,8 @@ const imgSlice = createSlice({
             state.uploading = action.payload.uploading;
         },
         set_preview: (state, action) => {
-            state.preview = action.payload.preview;
+            console.log(action.payload)
+            state.preview = action.payload;
         },
     },
 });
@@ -56,7 +57,7 @@ export const { upload_img, uploading, set_preview } = imgSlice.actions;
 export const reduximg = {
     // uploadImg,
     uploadImgDB,
-    // setPreview
+    
 };
 
 export default imgSlice.reducer;
