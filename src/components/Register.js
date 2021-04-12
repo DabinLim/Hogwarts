@@ -1,10 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import {Button, Text} from '../elements';
-import {nameCheck, idCheck, pwdCheck} from '../shared/common';
+import {nameCheck, emailCheck, pwdCheck} from '../shared/common';
 import {history} from '../redux/configStore';
+import { setCookie } from '../shared/Cookie';
+import {setSignUp, api} from '../redux/modules/user';
+import {useSelector, useDispatch} from 'react-redux';
 
 const Register = (props) => {
+    const dispatch = useDispatch()
     const [isLoading, setLoading] = React.useState(false)
     const [id, setId] = React.useState('')
     const [name, setName] = React.useState('')
@@ -15,8 +19,8 @@ const Register = (props) => {
 
         setLoading(true)
 
-        if(!idCheck(id)){
-            window.alert('아이디 형식이 맞지 않습니다.')
+        if(!emailCheck(id)){
+            window.alert('이메일 형식이 맞지 않습니다.')
             setLoading(false)
             return
         }
@@ -36,10 +40,8 @@ const Register = (props) => {
             return
         }
         else{
-            // 여기에 api
+            await dispatch(api.registerSV(id,name,password))
             setLoading(false)
-            window.alert('회원가입이 완료되었습니다.')
-            history.push('/login')
         }
     }
 
@@ -47,14 +49,14 @@ const Register = (props) => {
       <div className='auth-wrapper'>
 
           <div style={{textAlign: 'center'}}> 
-          <h3>Register</h3>
+          <ImageContainer/>
           </div>
     <form >
       <label>ID</label>
       <input name='email' onChange={(e) => {
           setId(e.target.value)
       }}  />
-      {!idCheck(id) && <p>영문자와 숫자를 조합하여 5~16자리 아이디를 설정하세요</p>}
+      {!emailCheck(id) && <p>이메일 형식에 맞지 않습니다.</p>}
       <label>Name</label>
       <input name='name' onChange={(e) => {
           setName(e.target.value)
@@ -75,7 +77,7 @@ const Register = (props) => {
     </form>
     <ButtonContainer>
       <Button cursor ='pointer' _disabled={isLoading} margin='20px 0px' _onClick={createUser}>Resigter</Button>
-    <Text NotP cursor ='pointer' style={{color:'gray', textDecoration:'none'}} _onClick={()=> {history.push('/login')}}>이미 아이디가 있다면</Text>
+    <Text NotP cursor ='pointer' style={{color:'gray', textDecoration:'none'}} _onClick={()=> {dispatch(setSignUp())}}>이미 아이디가 있다면</Text>
     </ButtonContainer>
       </div>
   );
@@ -85,6 +87,13 @@ const ButtonContainer = styled.div`
 
     width:350px;
     margin:0 auto;
+`;
+
+const ImageContainer = styled.div`
+    background-image:url('https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9.png?alt=media&token=30f8455f-351a-479b-9f42-a65f3b8c2492');
+    width:350px;
+    height:200px;
+    background-size:cover;
 `;
 
 export default Register;

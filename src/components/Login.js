@@ -1,22 +1,25 @@
 import React from 'react';
 import styled from 'styled-components';
 import {Button, Text} from '../elements';
-import {pwdCheck, idCheck} from '../shared/common';
-import {useDispatch} from 'react-redux';
+import {pwdCheck, emailCheck} from '../shared/common';
+import {useDispatch, useSelector} from 'react-redux';
 import {history} from '../redux/configStore';
-import {setUser} from '../redux/modules/user';
-
+import {setUser, api, setSignUp} from '../redux/modules/user';
+import {setCookie, getCookie, deleteCookie} from '../shared/Cookie';
 
 const Login = (props) => {
     const dispatch = useDispatch()
+    // 리덕스 상태 가져오기 실험
+    const user_info = useSelector(state => state.user.user)
+    console.log(user_info)
     const [isLoading, setLoading] = React.useState(false)
     const [id, setId] = React.useState('')
     const [password, setPassword] = React.useState('')
 
     const signIn = async() => {
         setLoading(true)
-        if(!idCheck(id)){
-            window.alert('아이디 형식이 맞지 않습니다.')
+        if(!emailCheck(id)){
+            window.alert('이메일 형식이 맞지 않습니다.')
             setLoading(false)
             return
         }
@@ -27,9 +30,8 @@ const Login = (props) => {
         }
         else{
             //여기에 api . then
-            dispatch(setUser({id, password}))
+            await dispatch(api.logInSV(id,password,history))
             setLoading(false)
-            window.alert('로그인이 완료되었습니다.')
             //.catch ...
         }
     }
@@ -38,14 +40,14 @@ const Login = (props) => {
     return (
         <div className='auth-wrapper'>
           <div style={{textAlign: 'center'}}> 
-          <h3>Log In</h3>
+          <ImageContainer/>
           </div>
     <form >
     <label>ID</label>
       <input name='email' onChange={(e) => {
           setId(e.target.value)
       }}  />
-      {!idCheck(id) && <p>영문자와 숫자를 조합하여 5~16자리 아이디를 입력하세요</p>}
+      {!emailCheck(id) && <p>이메일 형식에 맞지 않습니다.</p>}
       <label>Password</label>
       <input type="password" name='password' onChange={(e) => {
           setPassword(e.target.value)
@@ -54,7 +56,7 @@ const Login = (props) => {
     </form>
     <ButtonContainer>
       <Button cursor ='pointer' margin='20px 0px'  _disabled={isLoading} _onClick={signIn}>Log In</Button>
-      <Text NotP cursor ='pointer' style={{color:'gray', textDecoration:'none'}} _onClick={()=> {history.push('/register')}}>아직 아이디가 없다면</Text>
+      <Text NotP cursor ='pointer' style={{color:'gray', textDecoration:'none'}} _onClick={()=> {dispatch(setSignUp())}}>아직 아이디가 없다면</Text>
     </ButtonContainer>
       </div>
     )
@@ -64,6 +66,13 @@ const ButtonContainer = styled.div`
 
     width:350px;
     margin:0 auto;
+`;
+
+const ImageContainer = styled.div`
+    background-image:url('https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9.png?alt=media&token=30f8455f-351a-479b-9f42-a65f3b8c2492');
+    width:350px;
+    height:200px;
+    background-size:cover;
 `;
 
 export default Login;
