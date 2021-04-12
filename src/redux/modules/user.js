@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { deleteCookie, getCookie, setCookie } from "../../shared/Cookie";
 import axios from "axios";
-import { set } from "react-hook-form";
 
 const userSlice = createSlice({
   name: "user",
@@ -26,6 +25,9 @@ const userSlice = createSlice({
         state.is_signup = true;
       }
     },
+    addInterested: (state,action) => {
+      state.user.userInterested.push(action.payload);
+    },
   },
 });
 
@@ -36,7 +38,7 @@ const loginCheck = () => {
       dispatch(
         setUser({
           email: "ekqls12",
-          userName: "dabin",
+          username: "dabin",
           userInterested: [],
           userProfile: "https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/blankprofile.png?alt=media&token=839ae664-a63d-4e77-92c3-b1030ebde97e",
         })
@@ -82,7 +84,7 @@ const logInSV = (id, password, history) => {
     setCookie("is_login", "token");
     dispatch(setUser({
       email: id,
-      userName: password,
+      username: 'dabin',
       userInterested: [],
       userProfile: "https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/blankprofile.png?alt=media&token=839ae664-a63d-4e77-92c3-b1030ebde97e",
     }));
@@ -122,7 +124,7 @@ const logInSV = (id, password, history) => {
     //     if (error.response) {
     //       window.alert(error.response.data);
     //     }
-    //   });
+      // });
   };
 };
 
@@ -155,7 +157,7 @@ const registerSV = (email, name, password) => {
   };
 };
 
-export const { setUser, logOut, setSignUp } = userSlice.actions;
+export const { setUser, logOut, setSignUp, addInterested } = userSlice.actions;
 
 export const api = {
   loginCheck,

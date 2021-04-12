@@ -8,18 +8,36 @@ import Home from './pages/Home';
 import Profile from './pages/Profile'
 import AllChat from './pages/AllChat';
 import Sidebar from './components/Sidebar';
+import NoInterested from './components/NoInterested';
 import styled from 'styled-components';
 import {api} from './redux/modules/user';
 import {useDispatch, useSelector} from 'react-redux';
 
+
 function App() {
+
+  const [modalVisible, setModalVisible] = React.useState(false);
+
+
+  const openModal = () => {
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+
+  const userInfo = useSelector(state =>state.user.user)
   const dispatch = useDispatch()
   const is_login = useSelector(state=> state.user.is_login);
   React.useEffect(() => {
     dispatch(api.loginCheck())
-  })
+  },[])
   if(is_login){
     history.push('/all')
+  }
+  if(is_login && userInfo.userInterested.length<1 && modalVisible === false){
+    openModal()
   }
   return (
     <React.Fragment>
@@ -36,6 +54,12 @@ function App() {
       </BrowserRouter>
       </MainContainer>
       </Container>
+      <NoInterested
+        visible={modalVisible}
+        onClose={closeModal}
+        maskClosable={true}
+        closable={true}
+      />
     </React.Fragment>
   );
 }
