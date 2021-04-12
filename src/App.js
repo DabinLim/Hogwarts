@@ -5,6 +5,7 @@ import {history} from './redux/configStore';
 import './App.css';
 import Main from './pages/Main';
 import Home from './pages/Home';
+import Profile from './pages/Profile'
 import AllChat from './pages/AllChat';
 import Sidebar from './components/Sidebar';
 import styled from 'styled-components';
@@ -30,6 +31,7 @@ function App() {
         <Route exact path='/' component={Home}/> 
         <Route exact path='/main' component={Main}/>
         <Route exact path='/all' component={AllChat}/>
+        <Route exact path='/profile' component={Profile}/>
       </ConnectedRouter>
       </BrowserRouter>
       </MainContainer>
