@@ -39,10 +39,11 @@ function App() {
 }
 
 const Container = styled.div`
-  max-width:1000px;
+
   display:flex;
   flex-direction:row;
-  margin:20px auto;
+  justify-content:center;
+  margin:20px 20px;
   min-height:100vh;
   max-height:800px;
   border: 1px solid #dbdbdb;

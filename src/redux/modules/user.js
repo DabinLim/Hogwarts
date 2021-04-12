@@ -32,6 +32,7 @@ const userSlice = createSlice({
 const loginCheck = () => {
   return function (dispatch) {
     if (getCookie("is_login")) {
+      const token=getCookie('is_login')
       dispatch(
         setUser({
           email: "ekqls12",
@@ -42,18 +43,18 @@ const loginCheck = () => {
       );
 
       // const options = {
-      //   url: "/api/logincheck",
+      //   url: "http://52.79.251.93/api/logincheck",
       //   method: "GET",
       //   headers: {
       //     Accept: "application/json",
       //     "Content-Type": "application/json;charset=UTF-8",
+      //     token: token
       //   },
       // };
       // axios(options)
       //   .then((response) => {
-      //     console.log(response.data);
-
-      //     dispatch(setUser(response.data.userInfo));
+      //     console.log(response.data)
+      //     dispatch(setUser(response.data));
       //   })
       //   .catch((error) => {
       //     console.log(error);
@@ -77,7 +78,7 @@ const logOutSV = (history) => {
 
 const logInSV = (id, password, history) => {
   return function (dispatch) {
-    //클라이언트 로그인 시험
+    // 클라이언트 로그인 시험
     setCookie("is_login", "token");
     dispatch(setUser({
       email: id,
@@ -88,7 +89,7 @@ const logInSV = (id, password, history) => {
     window.alert("로그인이 완료되었습니다.");
 
     // const options = {
-    //   url: "/api/login",
+    //   url: "http://52.79.251.93/api/login",
     //   method: "POST",
     //   headers: {
     //     Accept: "application/json",
@@ -102,17 +103,19 @@ const logInSV = (id, password, history) => {
     // axios(options)
     //   .then((response) => {
     //     console.log(response.data);
-    //     let user_info = {
-    //       email: response.data.userInfo.userId,
-    //       userName: response.data.userInfo.userName,
-    //       userInterested: response.data.userInfo.userInterested,
-    //       userProfile: response.data.userInfo.userProfile,
-    //     };
+    //     // let user_info = {
+    //     //   email: response.data.userInfo.email,
+    //     //   userName: response.data.userInfo.userName,
+    //     //   userInterested: response.data.userInfo.userInterested,
+    //     //   userProfile: response.data.userInfo.userProfile,
+    //     // };
 
     //     // 받은 토근을 Cookie에 저장
-    //     setCookie("is_login", response.data.user_info.token);
+    //     setCookie("is_login", response.data);
     //     window.alert("로그인 완료");
-    //     dispatch(setUser(user_info));
+    //     dispatch(setUser())
+    //     history.push('/all')
+    //     // dispatch(setUser(user_info));
     //   })
     //   .catch((error) => {
     //     console.log(error);
@@ -126,7 +129,7 @@ const logInSV = (id, password, history) => {
 const registerSV = (email, name, password) => {
   return function (dispatch) {
     const options = {
-      url: "/api/signup",
+      url: "http://52.79.251.93/api/signup",
       method: "POST",
       headers: {
         Accept: "application/json",

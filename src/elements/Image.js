@@ -2,11 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Image = (props) => {
-    const {shape, src, size} = props;
+    const {shape, src, size,margin} = props;
 
     const styles = {
         src: src,
         size: size,
+        margin: margin,
     }
 
     if(shape === 'circle'){
@@ -34,8 +35,9 @@ const Image = (props) => {
 
 Image.defaultProps = {
     shape:'circle',
-    src: 'https://firebasestorage.googleapis.com/v0/b/dab-react.appspot.com/o/%E1%84%91%E1%85%B3%E1%84%85%E1%85%A9%E1%84%91%E1%85%B5%E1%86%AF.jpeg?alt=media&token=aa5058f2-2495-4ef3-acde-b30699096de9',
+    src: 'https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/blankprofile.png?alt=media&token=839ae664-a63d-4e77-92c3-b1030ebde97e',
     size: 36,
+    margin:'4px',
 }
 
 const ImageDefault = styled.div `
@@ -55,7 +57,7 @@ const ImageCircle = styled.div`
 
     background-image: url('${(props) => props.src}');
     background-size: cover;
-    margin: 4px;
+    margin: ${(props)=> props.margin};
 `;
 
 const AspectOutter = styled.div`

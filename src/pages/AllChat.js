@@ -14,14 +14,16 @@ const AllChat = (props) => {
             <ChatRoom/>
             <ChatRoom/>
             </AllChatContainer>
-            <CreateRoom>방 만들기</CreateRoom>
+            <CreateRoom>+ Start a room</CreateRoom>
         </React.Fragment>
     )
 }
 
+
 const AllChatContainer = styled.div`
     display:flex;
     flex-direction:column;
+    position:relative;
     align-items:center;
     height:100%;
     width:100%;
@@ -32,12 +34,15 @@ const AllChatContainer = styled.div`
 const CreateRoom = styled.button`
     border: 1px solid #dbdbdb;
     border-radius: 50px;
-    width:100px;
+    width:150px;
     height:50px;
     position:fixed;
-    background-color:green;
+    background-color:#28ae61;
+    color:white;
+    font-weight: 900;
     bottom:5%;
     right:5%;
+    box-shadow:1px 1px lightgray;
 `;
 
 export default AllChat;

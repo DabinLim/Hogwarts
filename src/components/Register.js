@@ -48,7 +48,7 @@ const Register = (props) => {
   return (
       <div className='auth-wrapper'>
 
-          <div style={{textAlign: 'center'}}> 
+          <div style={{display:'flex', justifyContent:'center'}}> 
           <ImageContainer/>
           </div>
     <form >
