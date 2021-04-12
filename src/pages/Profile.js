@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import { useDispatch } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -16,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Profile = (props) => {
+    const dispatch = useDispatch();
     const classes = useStyles();
     const [interest1, setinterest1] = useState('');
     const [interest2, setinterest2] = useState('');
@@ -32,6 +34,10 @@ const Profile = (props) => {
     const handleChange3 = (event) => {
         setinterest3(event.target.value);
     };
+    
+    const changeImg = () => {
+    }
+    ;
 
     return (
         <Fragment>
@@ -118,7 +124,6 @@ const Profile = (props) => {
 
 const Full = styled.div`
 display: flex;
-background: #a1b4d4;
 width: 100%;
 height: 100%;
 margin: 5px auto;
