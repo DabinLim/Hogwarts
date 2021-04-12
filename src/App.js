@@ -5,6 +5,7 @@ import {history} from './redux/configStore';
 import './App.css';
 import Main from './pages/Main';
 import Home from './pages/Home';
+import AllChat from './pages/AllChat';
 import Sidebar from './components/Sidebar';
 import styled from 'styled-components';
 import {api} from './redux/modules/user';
@@ -17,7 +18,7 @@ function App() {
     dispatch(api.loginCheck())
   })
   if(is_login){
-    history.push('/main')
+    history.push('/all')
   }
   return (
     <React.Fragment>
@@ -28,6 +29,7 @@ function App() {
       <ConnectedRouter history={history}>
         <Route exact path='/' component={Home}/> 
         <Route exact path='/main' component={Main}/>
+        <Route exact path='/all' component={AllChat}/>
       </ConnectedRouter>
       </BrowserRouter>
       </MainContainer>
@@ -37,18 +39,21 @@ function App() {
 }
 
 const Container = styled.div`
-  max-width:1400px;
+  max-width:1000px;
   display:flex;
   flex-direction:row;
   margin:20px auto;
   min-height:100vh;
+  max-height:800px;
   border: 1px solid #dbdbdb;
   border-radius:10px;
   overflow:hidden;
 `;
 
 const MainContainer = styled.div`
-  margin :auto;
+  width:100%;
+  padding:2rem;
+  background-color:#f2efe4;
 `;
 
 export default App;

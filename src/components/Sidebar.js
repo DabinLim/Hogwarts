@@ -16,7 +16,7 @@ const Sidebar = (props) => {
                 <SideProfile/>
                 </ProfileContainer>
                 <Line/>
-                <Text>모든 채팅방 보기</Text>
+                <Text cursor='pointer' _onClick={()=>{history.push('/all')}}>모든 채팅방 보기</Text>
                 <Text>추천 채팅방</Text>
                 <Text>참여하고 있는 채팅방</Text>
                 <LogOutContainer>
@@ -32,6 +32,7 @@ const Container = styled.div`
     padding:2rem;
     min-height:100%;
     width:200px;
+    border-right:1px solid #dbdbdb;
     
 `;
 
