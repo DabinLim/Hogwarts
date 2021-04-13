@@ -9,6 +9,7 @@ import Profile from './pages/Profile'
 import AllChat from './pages/AllChat';
 import Sidebar from './components/Sidebar';
 import ChatPage from './pages/ChatPage';
+import ChatPage2 from './pages/ChatPage2';
 import NoInterested from './components/NoInterested';
 import styled from 'styled-components';
 import {api} from './redux/modules/user';
@@ -52,6 +53,7 @@ function App() {
         <Route exact path='/all' component={AllChat}/>
         <Route exact path='/profile' component={Profile}/>
         <Route exact path='/chatpage' component={ChatPage}/>
+        <Route exact path='/chatpage2' component={ChatPage2}/>
       </ConnectedRouter>
       </BrowserRouter>
       </MainContainer>

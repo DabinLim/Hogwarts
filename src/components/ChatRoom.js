@@ -21,7 +21,7 @@ const ChatRoom = (props) => {
                     <Image margin='0px' size='24'/>
                     <Text >heyman</Text>
                     </CrewBox>
-                    <Text>외 ~명 참여중</Text>
+                    <Text _onClick={()=>{history.push('/chatpage2')}}>외 ~명 참여중</Text>
                 </TextBox>
             </Container>
         </React.Fragment>

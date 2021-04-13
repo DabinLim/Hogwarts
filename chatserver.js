@@ -27,6 +27,9 @@ app.get('/', (req, res) => {
 io.on('connection', (socket) => {
     console.log('클라이언트 접속:' , socket.client.id)
 
+    socket.on('connected', (msg) => {
+        io.emit('connected', msg)
+    })
     socket.on('chat-msg', (msg) => {
         console.log('message:' , msg)
         io.emit('chat-msg', msg)
