@@ -8,6 +8,7 @@ const userSlice = createSlice({
     user: null,
     is_login: false,
     is_signup: false,
+    chat_content:[]
   },
   reducers: {
     setUser: (state, action) => {
@@ -28,6 +29,9 @@ const userSlice = createSlice({
     addInterested: (state,action) => {
       state.user.userInterested.push(action.payload);
     },
+    setChat: (state, action) => {
+      state.chat_content = action.payload
+    }
   },
 });
 
@@ -157,7 +161,7 @@ const registerSV = (email, name, password) => {
   };
 };
 
-export const { setUser, logOut, setSignUp, addInterested } = userSlice.actions;
+export const { setChat, setUser, logOut, setSignUp, addInterested } = userSlice.actions;
 
 export const api = {
   loginCheck,

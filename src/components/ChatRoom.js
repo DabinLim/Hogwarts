@@ -1,13 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import {Text, Image} from '../elements';
+import {history} from '../redux/configStore';
 
 const ChatRoom = (props) => {
 
     return(
         <React.Fragment>
             <Container>
-                <Title>
+                <Title onClick={()=>{history.push('/chatpage')}}>
                 (관심사) 관심사에 관심있는 사람 모여라~
                 </Title>
                 <TextBox>
