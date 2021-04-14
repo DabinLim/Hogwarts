@@ -17,7 +17,7 @@ const Sidebar = (props) => {
                 </ProfileContainer>
                 <Line/>
                 <Text cursor='pointer' _onClick={()=>{history.push('/all')}}>모든 채팅방 보기</Text>
-                <Text>추천 채팅방</Text>
+                <Text cursor='pointer' _onClick={()=> {history.push('/interested')}}>추천 채팅방</Text>
                 <Text>참여하고 있는 채팅방</Text>
                 <LogOutContainer>
                 <Text cursor='pointer' _onClick={()=>{dispatch(api.logOutSV(history))}}>로그아웃</Text>

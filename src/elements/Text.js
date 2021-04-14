@@ -2,9 +2,9 @@ import React from "react";
 import styled from "styled-components";
 
 const Text = (props) => {
-  const { bold, color, size, children, margin, _onClick,NotP, cursor  } = props;
+  const { bold, color, size, children, margin, _onClick,NotP, cursor,width  } = props;
 
-  const styles = { bold: bold, color: color, size: size, margin: margin, cursor:cursor, NotP:NotP,};
+  const styles = { bold: bold, color: color, size: size, margin: margin, cursor:cursor, NotP:NotP,width:width};
 
   return (
     <React.Fragment>
@@ -30,6 +30,7 @@ Text.defaultProps = {
   margin: false,
   _onClick: () => {},
   cursor:'',
+  width:'100%',
 };
 
 const P = styled.p`
@@ -45,7 +46,7 @@ const P = styled.p`
 
 const T = styled.div`
   color: ${(props) => props.color};
-
+  width: ${(props) => props.width};
   vertical-align: center;
   font-size: ${(props) => props.size};
   font-weight: ${(props) => (props.bold ? "600" : "400")};

@@ -18,6 +18,8 @@ const corsOptions = {
   
 
 
+
+
 app.use(cors(corsOptions))
 app.get('/', (req, res) => {
     res.send('안녕 내 이름은 서버!')

@@ -4,24 +4,24 @@ import {Text, Image} from '../elements';
 import {history} from '../redux/configStore';
 
 const ChatRoom = (props) => {
-
+        console.log(props)
     return(
         <React.Fragment>
             <Container>
-                <Title onClick={()=>{history.push('/chatpage')}}>
-                (관심사) 관심사에 관심있는 사람 모여라~
+                <Title onClick={()=>{history.push('/chatpage/'+props.room_info.room_id)}}>
+                ({props.room_info.userInterested}){props.room_info.title}
                 </Title>
                 <TextBox>
                     <Text margin='0px' bold>참여인원</Text>
                     <CrewBox>
                     <Image margin='0px' size='24'/>
-                    <Text >dabin</Text>
+                    <Text >{props.room_info.members[0]}</Text>
                     </CrewBox>
                     <CrewBox>
                     <Image margin='0px' size='24'/>
-                    <Text >heyman</Text>
+                    <Text >{props.room_info.members[1]}</Text>
                     </CrewBox>
-                    <Text _onClick={()=>{history.push('/chatpage2')}}>외 ~명 참여중</Text>
+                    <Text>{props.room_info.members.length}명 참여중</Text>
                 </TextBox>
             </Container>
         </React.Fragment>
@@ -34,6 +34,7 @@ const Container = styled.div`
     height:100%;
     max-width:500px;
     min-height:200px;
+    max-height:200px;
     margin: 10px 0px;
     padding:0px 5px;
     border:1px solid #dbdbdb;

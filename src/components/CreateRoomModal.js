@@ -1,84 +1,111 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import { makeStyles } from '@material-ui/core/styles';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import Stomp from "stompjs";
+import SockJS from "sockjs-client";
+import { getCookie } from "../shared/Cookie";
+import { api } from "../redux/modules/chat";
+import { Input, Button, Text } from "../elements";
+
+
+const useStyles = makeStyles((theme) => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
+}));
 
 const CreateRoomModal = (props) => {
-  const { className, visible, maskClosable, closable, onClose} = props;
-  const user_name = useSelector(state => state.user.user.username)
-  const [socketConnected, setSocketConnected] = React.useState(false);
-  const [room_name, setRoomName] = React.useState([]);
-  const [interested, setInterested] = React.useState(null)
-
-
-  const webSocketUrl = `ws://websocket.com`;
-  let ws = React.useRef(null);
-
-
-    const onMaskClick = (e) => {
-        if (e.target === e.currentTarget) {
-            onClose(e)
-        }
-    }
-    
-    const close = (e) => {
-        if(onClose) {
-            onClose(e)
-        }
-    }
-
-
-    const createRoom = () => {
-      if (socketConnected) {
-          ws.current.send(
-            JSON.stringify({
-              interested: interested,
-              title:room_name,
-              name:user_name
-            })
-          );
-          close()
-        }
+  const { className, visible, maskClosable, closable, onClose } = props;
+  const classes = useStyles();
+  const dispatch = useDispatch();
+  const user_info = useSelector((state) => state.user.user);
+  let user_name;
+  if (user_info) {
+    user_name = user_info.username;
   }
-  
-    React.useEffect(() => {
-        if (!ws.current) {
-          ws.current = new WebSocket(webSocketUrl);
-          ws.current.onopen = () => {
-            console.log("connected to " + webSocketUrl);
-            setSocketConnected(true);
-          };
-          ws.current.onclose = (error) => {
-            console.log("disconnect from " + webSocketUrl);
-            console.log(error);
-          };
-          ws.current.onerror = (error) => {
-            console.log("connection error " + webSocketUrl);
-            console.log(error);
-          };
-        }
-    
-        return () => {
-          console.log("clean up");
-          ws.current.close();
-        };
-      }, []);
-  
-    return(
-        <React.Fragment>
-            <ModalOverlay visible={visible}>
-        <ModalContainer className={className} tabIndex="-1" visible={visible} onClick={maskClosable ? onMaskClick: null}>
+
+  const [room_name, setRoomName] = React.useState("");
+  const [interested, setInterested] = React.useState("");
+
+  const onMaskClick = (e) => {
+    if (e.target === e.currentTarget) {
+      onClose(e);
+    }
+  };
+
+  const close = (e) => {
+    if (onClose) {
+      onClose(e);
+    }
+  };
+
+  const createRoom = () => {
+    if (room_name === "") {
+      window.alert("방 이름을 입력하세요.");
+    } else {
+      let room_data = {
+        title: room_name,
+        interested:interested,
+      };
+      dispatch(api.createRoom(room_data));
+      setRoomName("");
+      setInterested("");
+    }
+  };
+
+  React.useEffect(() => {}, []);
+
+  return (
+    <React.Fragment>
+      <ModalOverlay visible={visible}>
+        <ModalContainer
+          className={className}
+          tabIndex="-1"
+          visible={visible}
+          onClick={maskClosable ? onMaskClick : null}
+        >
           <ModalInner tabIndex="0">
-              {closable && <CloseButton onClick={close}>x</CloseButton>}
-              <input type='text' value={room_name} onChange ={(e) => setRoomName(e.target.value)}/>
-              <input type='text' value={interested} onChange ={(e) => setInterested(e.target.value)}/>
-              <button onClick={createRoom}>작성</button>
-              </ModalInner>
+            {closable && <CloseButton onClick={close}>x</CloseButton>}
+            <Text>채팅방 제목</Text>
+            <Input
+              type="text"
+              placeholder='채팅방 제목을 입력해주세요'
+              value={room_name}
+              onChange={(e) => setRoomName(e.target.value)}
+            />
+            <FormControl className={classes.formControl}> 
+              <InputLabel htmlFor="age-native-simple">관심사</InputLabel>
+              <Select
+                native
+                onChange={(e) => {
+                  setInterested(e.target.value);
+                }}
+              >
+                <option aria-label="None" value="" />
+                <option value={"React"}>React</option>
+                <option value={"Spring"}>Spring</option>
+                <option value={"Node"}>Node.js</option>
+                <option value={"ReactNative"}>React Native</option>
+              </Select>
+            </FormControl>
+            <Button margin="20px 0px 0px 0px" cursor='pointer' _onClick={createRoom}>
+              <Text color='white' bold NotP>작성</Text>
+            </Button>
+          </ModalInner>
         </ModalContainer>
       </ModalOverlay>
-        </React.Fragment>
-    )
-}
-
+    </React.Fragment>
+  );
+};
 
 const ModalOverlay = styled.div`
   box-sizing: border-box;
@@ -112,7 +139,7 @@ const ModalInner = styled.div`
   background-color: #fff;
   border-radius: 10px;
   width: 400px;
-  height:auto;
+  height: auto;
   max-width: 480px;
   top: 50%;
   transform: translateY(-50%);
@@ -121,15 +148,15 @@ const ModalInner = styled.div`
 `;
 
 const CloseButton = styled.button`
-font-size: x-large;
-position:fixed;
-top:0;
-right:0;
-width:30px;
-height:30px;
-border-style: none;
-border-radius:10px;
-background-color: white;
+  font-size: x-large;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 30px;
+  height: 30px;
+  border-style: none;
+  border-radius: 10px;
+  background-color: white;
 `;
 
 export default CreateRoomModal;

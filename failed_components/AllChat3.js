@@ -10,7 +10,7 @@ const AllChat3 = (props) => {
     const [rooms, setRooms] = React.useState([]);
 
 
-    const webSocketUrl = `ws://websocket.com`;
+    const webSocketUrl = `ws://localhost:3001`;
     let ws = React.useRef(null);
 
     React.useEffect(() => {

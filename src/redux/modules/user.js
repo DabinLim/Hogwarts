@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import { deleteCookie, getCookie, setCookie } from "../../shared/Cookie";
 import axios from "axios";
 
+axios.defaults.baseURL = 'http://52.79.251.93';
+
 const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -49,7 +51,7 @@ const loginCheck = () => {
       );
 
       // const options = {
-      //   url: "http://52.79.251.93/api/logincheck",
+      //   url: "/api/logincheck",
       //   method: "GET",
       //   headers: {
       //     Accept: "application/json",
@@ -95,7 +97,7 @@ const logInSV = (id, password, history) => {
     window.alert("로그인이 완료되었습니다.");
 
     // const options = {
-    //   url: "http://52.79.251.93/api/login",
+    //   url: "/api/login",
     //   method: "POST",
     //   headers: {
     //     Accept: "application/json",
@@ -135,7 +137,7 @@ const logInSV = (id, password, history) => {
 const registerSV = (email, name, password) => {
   return function (dispatch) {
     const options = {
-      url: "http://52.79.251.93/api/signup",
+      url: "/api/signup",
       method: "POST",
       headers: {
         Accept: "application/json",
