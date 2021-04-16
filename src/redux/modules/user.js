@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { deleteCookie, getCookie, setCookie } from "../../shared/Cookie";
 import axios from "axios";
 
-axios.defaults.baseURL = 'http://52.79.251.93';
+axios.defaults.baseURL = 'http://13.125.21.123';
 
 const userSlice = createSlice({
   name: "user",
@@ -50,26 +50,26 @@ const loginCheck = () => {
         })
       );
 
-      // const options = {
-      //   url: "/api/logincheck",
-      //   method: "GET",
-      //   headers: {
-      //     Accept: "application/json",
-      //     "Content-Type": "application/json;charset=UTF-8",
-      //     token: token
-      //   },
-      // };
-      // axios(options)
-      //   .then((response) => {
-      //     console.log(response.data)
-      //     dispatch(setUser(response.data));
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //     if (error.response) {
-      //       window.alert(error.response.data);
-      //     }
-      //   });
+      const options = {
+        url: "/api/logincheck",
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json;charset=UTF-8",
+          token: token
+        },
+      };
+      axios(options)
+        .then((response) => {
+          console.log(response.data)
+          dispatch(setUser(response.data));
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error.response) {
+            window.alert(error.response.data);
+          }
+        });
     } else {
       dispatch(logOut());
     }
@@ -87,50 +87,50 @@ const logOutSV = (history) => {
 const logInSV = (id, password, history) => {
   return function (dispatch) {
     // 클라이언트 로그인 시험
-    setCookie("is_login", "token");
-    dispatch(setUser({
-      email: id,
-      username: 'dabin',
-      userInterested: [],
-      userProfile: "https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/blankprofile.png?alt=media&token=839ae664-a63d-4e77-92c3-b1030ebde97e",
-    }));
-    window.alert("로그인이 완료되었습니다.");
+    // setCookie("is_login", "token");
+    // dispatch(setUser({
+    //   email: id,
+    //   username: 'dabin',
+    //   userInterested: [],
+    //   userProfile: "https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/blankprofile.png?alt=media&token=839ae664-a63d-4e77-92c3-b1030ebde97e",
+    // }));
+    // window.alert("로그인이 완료되었습니다.");
 
-    // const options = {
-    //   url: "/api/login",
-    //   method: "POST",
-    //   headers: {
-    //     Accept: "application/json",
-    //     "Content-Type": "application/json;charset=UTF-8",
-    //   },
-    //   data: {
-    //     email: id,
-    //     password: password,
-    //   },
-    // };
-    // axios(options)
-    //   .then((response) => {
-    //     console.log(response.data);
-    //     // let user_info = {
-    //     //   email: response.data.userInfo.email,
-    //     //   userName: response.data.userInfo.userName,
-    //     //   userInterested: response.data.userInfo.userInterested,
-    //     //   userProfile: response.data.userInfo.userProfile,
-    //     // };
+    const options = {
+      url: "/api/login",
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json;charset=UTF-8",
+      },
+      data: {
+        email: id,
+        password: password,
+      },
+    };
+    axios(options)
+      .then((response) => {
+        console.log(response.data);
+        let user_info = {
+          email: response.data.email,
+          userName: response.data.userName,
+          userInterested: response.data.userInterested,
+          userProfile: response.data.userProfile,
+        };
 
-    //     // 받은 토근을 Cookie에 저장
-    //     setCookie("is_login", response.data);
-    //     window.alert("로그인 완료");
-    //     dispatch(setUser())
-    //     history.push('/all')
-    //     // dispatch(setUser(user_info));
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //     if (error.response) {
-    //       window.alert(error.response.data);
-    //     }
-      // });
+        // 받은 토근을 Cookie에 저장
+        
+        setCookie("is_login", response.data.token);
+        window.alert("로그인 완료");
+        history.push('/all')
+        dispatch(setUser(user_info));
+      })
+      .catch((error) => {
+        console.log(error);
+        if (error.response) {
+          window.alert(error.response.data);
+        }
+      });
   };
 };
 
@@ -162,6 +162,28 @@ const registerSV = (email, name, password) => {
       });
   };
 };
+
+
+const addInterSV = (interested) => {
+  return function(dispatch) {
+    const token = getCookie('is_login');
+    const option = {
+      url:'/api/interest',
+      method:'POST',
+      header:{
+        token:token,
+      },
+      data:{
+        userInterested:[interested]
+      }
+    }
+    axios(option).then((response) => {
+      console.log(response)
+    }).catch((error) => {
+      console.log(error)
+    })
+  }
+}
 
 export const { setChat, setUser, logOut, setSignUp, addInterested } = userSlice.actions;
 

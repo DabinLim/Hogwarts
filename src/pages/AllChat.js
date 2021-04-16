@@ -25,16 +25,16 @@ const AllChat = (props) => {
 
 
   React.useEffect(() => {
-    // dispatch(api.findAllRoom())
-    dispatch(api.MockRoom())
+    dispatch(api.findAllRoom())
+    // dispatch(api.MockRoom())
   },[])
 
   return (
     <React.Fragment>
       <AllChatContainer>
-        {room_info&&room_info.map((v)=>{
+        {room_info&&room_info.map((v, index)=>{
           return(
-            <ChatRoom room_info={v}/>
+            <ChatRoom key={index} room_info={v}/>
           )
         })}
       </AllChatContainer>

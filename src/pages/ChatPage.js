@@ -1,14 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
 import {useDispatch, useSelector} from 'react-redux';
-import {Button, Input, Text} from '../elements';
+import {Button, Image, Input, Text} from '../elements';
 import {setChat} from '../redux/modules/user';
 import Stomp from 'stompjs';
 import SockJS from 'sockjs-client';
 import {getCookie} from '../shared/Cookie';
+import axios from 'axios'
+
+axios.defaults.baseURL = 'http://13.125.21.123';
 
 const ChatPage = (props) => {
     const dispatch = useDispatch()
+    let sock = new SockJS('http://13.125.21.123/ws-stomp');
 
     const user_info = useSelector(state=>state.user.user);
     let user_name;
@@ -34,35 +38,75 @@ const ChatPage = (props) => {
     }
 
     const sendMsg = () => {
-        let sock = new SockJS('');
         let ws = Stomp.over(sock);
 
         const msgData = {
+            type:'TALK',
             roomId:room_id,
+            message:content,
             userName:user_name,
             userProfile:user_profile
         }
         ws.connect({
             token:token,
         }, () => {
-            ws.send('pub/api/chat/', {}, JSON.stringify(msgData))
+            ws.send('pub/api/chat/message', {}, JSON.stringify(msgData))
+            console.log(msgData)
         })
         setContent('')
     }
 
-    React.useEffect(()=> {
-        let sock = new SockJS('');
+    React.useEffect(() => {
+        const token = getCookie('is_login')
+        const option = {
+            url:'/api/chat/user',
+            method:'GET',
+            header:{
+                token:token,
+            },
+        }
+        axios(option).then((response) => {
+            console.log(response);
+        }).catch(error => console.log(error))
+    },[])
+
+    React.useEffect(() => {
         let ws = Stomp.over(sock);
-        const chat_logs=[];
+
+        const msgData = {
+            type:'ENTER',
+            roomId:room_id,
+            message:content,
+            userName:user_name,
+            userProfile:user_profile,
+        }
+        ws.connect({
+            token:token,
+        }, () => {
+            ws.send('pub/api/chat/message', {}, JSON.stringify(msgData))
+        })
+    },[])
+
+    React.useEffect(()=> {
+        let ws = Stomp.over(sock);
+        const chat_logs=chatLogs;
         ws.connect({
             token:token
         }, () => {
-            ws.subscribe(`/sub/api/chat/${room_id}`, (data) => {
+            ws.subscribe(`/sub/api/chat/message`, (data) => {
                 const newMsg = JSON.parse(data.body);
+                console.log(newMsg)
                 chat_logs.unshift(newMsg);
             })
         })
         setChatLogs([...chat_logs]);
+
+        return () => {
+            const token = getCookie('is_login');
+            ws.disconnect(() => {
+              ws.unsubscribe('sub-0');
+            }, { token: token })
+          }
     },[])
 
 
@@ -73,19 +117,26 @@ const ChatPage = (props) => {
                 <Content>
                 <ContentBox>
                 {chatLogs.map((v) => {
-                    return(
-                        <div style={{display:'flex', justifyContent:'flex-end'}}>
-                        <ChatBox>
-                            <Text width='auto' NotP>{v}</Text>
-                        </ChatBox>
-                        </div>
-                    )
+                    if(v.type === 'TALK'){
+                        return(
+                            <div style={{display:'flex', justifyContent:'flex-end'}}>
+                            <ChatBox>
+                                <Image src={v.userProfile} size='24'/>
+                                <Text width='auto' NotP>{v.userName} : {v.message}</Text>
+                            </ChatBox>
+                            </div>
+                        )
+                    }else{
+                        return(
+                            <div style={{display:'flex', justifyContent:'center'}}>{v.message}</div>
+                        )
+                    }
                 })}
                 </ContentBox>
                 </Content>
             <TextWrite>
             <Input width='60%' type='text' value={content} _onChange={(e) => {setContent(e.target.value)}}/>
-            <Button width='60px'_onClick={send}>전송</Button>
+            <Button width='60px'_onClick={sendMsg}>전송</Button>
             </TextWrite>
             </Container>
         </React.Fragment>
@@ -120,6 +171,9 @@ const TextWrite = styled.div`
 `;
 
 const ChatBox = styled.div`
+    display:flex;
+    flex-direction:row;
+    justify-content:flex-end;
     width:auto;
     max-width:250px;
     height:auto;

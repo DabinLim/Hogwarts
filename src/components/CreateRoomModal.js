@@ -35,7 +35,7 @@ const CreateRoomModal = (props) => {
 
   const [room_name, setRoomName] = React.useState("");
   const [interested, setInterested] = React.useState("");
-
+  console.log(room_name)
   const onMaskClick = (e) => {
     if (e.target === e.currentTarget) {
       onClose(e);
@@ -52,11 +52,7 @@ const CreateRoomModal = (props) => {
     if (room_name === "") {
       window.alert("방 이름을 입력하세요.");
     } else {
-      let room_data = {
-        title: room_name,
-        interested:interested,
-      };
-      dispatch(api.createRoom(room_data));
+      dispatch(api.createRoom(room_name, interested, user_name));
       setRoomName("");
       setInterested("");
     }
@@ -80,7 +76,7 @@ const CreateRoomModal = (props) => {
               type="text"
               placeholder='채팅방 제목을 입력해주세요'
               value={room_name}
-              onChange={(e) => setRoomName(e.target.value)}
+              _onChange={(e) => setRoomName(e.target.value)}
             />
             <FormControl className={classes.formControl}> 
               <InputLabel htmlFor="age-native-simple">관심사</InputLabel>

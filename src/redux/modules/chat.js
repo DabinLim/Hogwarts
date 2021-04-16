@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { deleteCookie, getCookie, setCookie } from "../../shared/Cookie";
 import axios from "axios";
 import {response} from '../Mock/RoomList';
-axios.defaults.baseURL = 'http://52.79.251.93';
+axios.defaults.baseURL = 'http://13.125.21.123';
 
 const chatSlice = createSlice({
   name: "chat",
@@ -14,6 +14,9 @@ const chatSlice = createSlice({
     setRoom: (state, action) => {
       state.room_list = action.payload;
     },
+    // addRoom: (state, action) => {
+    //     state.room_list.unshift(action.payload);
+    // }
   },
 });
 
@@ -28,7 +31,16 @@ const MockRoom = () => {
 
 const findAllRoom = () => {
     return function(dispatch) {
-        axios.get('/chat/rooms').then(response => {
+        console.log('hi')
+        const token = getCookie('is_login');
+        const option = {
+            url:'/api/chat/rooms',
+            method: 'GET',
+            header:{
+                token:token
+            }
+        }
+        axios(option).then(response => {
             console.log(response.data)
             dispatch(setRoom(response.data))
         }).catch(error => {
@@ -37,11 +49,26 @@ const findAllRoom = () => {
     }
 }
 
-const createRoom = (data) => {
+const createRoom = (room_name, interested, user_name) => {
     return function(dispatch) {
-        axios.post('/chat/room', data).then(response => {
-            dispatch(findAllRoom())
-        }).catch(error => {
+        const token = getCookie('is_login');
+        const option = {
+            url:'/api/chat/room',
+            method:'POST',
+            header:{
+                token:token,
+            },
+            data:{
+                name: user_name,
+                roomName:room_name,
+                userInterested:interested
+            }
+        }
+        axios(option).then((response) => {
+            console.log(response.data)
+            findAllRoom()
+        })
+        .catch(error => {
             console.log(error)
         })
     }

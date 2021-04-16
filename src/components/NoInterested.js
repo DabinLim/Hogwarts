@@ -53,7 +53,6 @@ const NoInterested = (props) => {
       <ModalOverlay visible={visible}>
         <ModalContainer className={className} tabIndex="-1" visible={visible} onClick={maskClosable ? onMaskClick: null}>
           <ModalInner tabIndex="0">
-              {closable && <CloseButton onClick={close}>x</CloseButton>}
               <Text bold>관심사를 1개 이상 설정해주셔야 서비스 이용이 가능합니다.</Text>
               <FormControl className={classes.formControl}>
         <InputLabel htmlFor="age-native-simple">관심사</InputLabel>
