@@ -164,7 +164,7 @@ const addInterSV = (interested) => {
       //   token:token
       // },
       data:{
-        userInterested:[interested]
+        userInterested:[interested, '', '']
       }
     }
     axios(option).then((response) => {

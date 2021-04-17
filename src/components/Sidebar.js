@@ -8,7 +8,7 @@ import SideProfile from './SideProfile';
 
 const Sidebar = (props) => {
     const dispatch = useDispatch()
-
+    
     return (
         <React.Fragment>
             <Container>
@@ -20,7 +20,9 @@ const Sidebar = (props) => {
                 <Text cursor='pointer' _onClick={()=> {history.push('/interested')}}>추천 채팅방</Text>
                 <Text>참여하고 있는 채팅방</Text>
                 <LogOutContainer>
-                <Text cursor='pointer' _onClick={()=>{dispatch(api.logOutSV(history))}}>로그아웃</Text>
+                <Text cursor='pointer' _onClick={()=>{
+                    dispatch(api.logOutSV(history))
+                    }}>로그아웃</Text>
                 </LogOutContainer>
             </Container>
         </React.Fragment>

@@ -9,15 +9,19 @@ import { getCookie } from "../shared/Cookie";
 import axios from "axios";
 import TextWrite from "../components/TextWrite";
 
+
+
+let msg_check;
 axios.defaults.baseURL = "http://13.125.21.123";
 const ChatPage = (props) => {
   let sock = new SockJS("http://13.125.21.123/ws-stomp");
+  let ws = Stomp.over(sock);
   const dispatch = useDispatch();
   const user_info = useSelector((state) => state.user.user);
   let user_name;
   let user_profile;
   if (user_info) {
-    user_name = user_info.username;
+    user_name = user_info.userName;
     user_profile = user_info.userProfile;
   }
 
@@ -35,82 +39,113 @@ const ChatPage = (props) => {
   };
 
   const sendMsg = () => {
-    let ws = Stomp.over(sock);
 
-    const msgData = {
-      type: "TALK",
-      roomId: room_id,
-      message: msg.current.value,
-      userName: user_name,
-      userProfile: user_profile,
-    };
-    ws.connect(
-      {
-        token: token,
-      },
-      () => {
-        ws.send("pub/api/chat/message", {}, JSON.stringify(msgData));
-        console.log(msgData);
-      }
-    );
-    setContent("");
+    console.log(msg)
+        ws.send(`/pub/api/chat/message`, {token: token}, JSON.stringify({
+          type: "TALK",
+          roomId: room_id,
+          message: msg.current.value,
+          userName: user_name,
+          userProfile: user_profile,
+        }));
+
+  
   };
 
-  React.useEffect(() => {
-    const token = getCookie("is_login");
-    const option = {
-      url: "/api/chat/user",
-      method: "GET",
-      header: {
-        token: token,
-      },
-    };
-    axios(option)
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => console.log(error));
-  }, []);
+  // React.useEffect(() => {
+  //   const token = getCookie("is_login");
+  //   const option_a = {
+  //     url: `/api/chat/room/enter/${room_id}`,
+  //     method: "GET",
+  //     header: {
+  //       token: token,
+  //     },
+  //   }
+  //   axios(option_a).then((response) => {
+  //     console.log(response)
+  //   }).catch((error)=> {
+  //     console.log(error)
+  //   })
+  //   const option = {
+  //     url: "/api/chat/user",
+  //     method: "GET",
+  //     header: {
+  //       token: token,
+  //     },
+  //   };
+  //   axios(option)
+  //     .then((response) => {
+  //       console.log(response);
+  //     })
+  //     .catch((error) => console.log(error));
+  // }, []);
+
+  // React.useEffect(() => {
+  //   ws.connect(
+  //     {
+  //       token: token,
+  //     },
+  //     () => {
+  //       console.log('보냄')
+  //       ws.send(`/pub/api/chat/message`, {token: token}, JSON.stringify({
+  //         type: "ENTER",
+  //         roomId: room_id,
+  //         message: content,
+  //         userName: user_name,
+  //         userProfile: user_profile,
+  //       }));
+  //     }
+  //   );
+  //   // return () => {
+  //   //   const token = getCookie("is_login");
+  //   //   ws.disconnect(
+  //   //     () => {
+  //   //       ws.unsubscribe("sub-0");
+  //   //     },
+  //   //     { token: token }
+  //   //   );
+  //   // };
+  // })
 
   React.useEffect(() => {
-    let ws = Stomp.over(sock);
 
-    const msgData = {
-      type: "ENTER",
-      roomId: room_id,
-      message: content,
-      userName: user_name,
-      userProfile: user_profile,
-    };
-    ws.connect(
-      {
-        token: token,
-      },
-      () => {
-        ws.send("pub/api/chat/message", {}, JSON.stringify(msgData));
-      }
-    );
-  }, []);
-
-  React.useEffect(() => {
-    let ws = Stomp.over(sock);
     const chat_logs = chatLogs;
     ws.connect(
       {
         token: token,
       },
       () => {
-        ws.subscribe(`/sub/api/chat/message`, (data) => {
+        ws.send(`/pub/api/chat/message`, {token: token}, JSON.stringify({
+          type: "ENTER",
+          roomId: room_id,
+          message: content,
+          userName: user_name,
+          userProfile: user_profile,
+        }));
+        ws.subscribe(`/sub/chat/room/${room_id}`, (data) => {
+          console.log('ㅎㅇㅎㅇ')
+          console.log(data)
           const newMsg = JSON.parse(data.body);
           console.log(newMsg);
-          chat_logs.unshift(newMsg);
+          if(msg_check !== newMsg){
+            chat_logs.unshift(newMsg);
+            setChatLogs([...chat_logs]);
+            console.log(chatLogs)
+          }
         });
       }
-    );
-    setChatLogs([...chat_logs]);
+      );
+
 
     return () => {
-      const token = getCookie("is_login");
+
+      ws.send(`/pub/api/chat/message`, {token: token}, JSON.stringify({
+        type: "QUIT",
+        roomId: room_id,
+        message: content,
+        userName: user_name,
+        userProfile: user_profile,
+      }));
       ws.disconnect(
         () => {
           ws.unsubscribe("sub-0");
