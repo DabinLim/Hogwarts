@@ -108,7 +108,7 @@ const ChatPage = (props) => {
   // })
 
   React.useEffect(() => {
-
+    const token = getCookie('is_login')
     const chat_logs = chatLogs;
     ws.connect(
       {
@@ -165,8 +165,8 @@ const ChatPage = (props) => {
                 return (
                   <div style={{ display: "flex", justifyContent: "flex-end" }}>
                     <ChatBox>
-                      <Image src={v.userProfile} size="24" />
-                      <Text width="auto" NotP>
+                      {v.userProfile? <Image src={v.userProfile} size="24" /> : <Image src='https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/blankprofile.png?alt=media&token=839ae664-a63d-4e77-92c3-b1030ebde97e' size="24" />}
+                      <Text width="auto" NotP margin='auto 0px'>
                         {v.userName} : {v.message}
                       </Text>
                     </ChatBox>
@@ -178,8 +178,8 @@ const ChatPage = (props) => {
                     style={{ display: "flex", justifyContent: "flex-start" }}
                   >
                     <ChatBox>
-                      <Image src={v.userProfile} size="24" />
-                      <Text width="auto" NotP>
+                    {v.userProfile? <Image src={v.userProfile} size="24" /> : <Image src='https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/blankprofile.png?alt=media&token=839ae664-a63d-4e77-92c3-b1030ebde97e' size="24" />}
+                      <Text width="auto" NotP margin='auto 0px'>
                         {v.userName} : {v.message}
                       </Text>
                     </ChatBox>
@@ -229,6 +229,7 @@ const Content = styled.div`
 const TextBox = styled.div`
   display: flex;
   flex-direction: row;
+  align-items:center;
   margin-top: 30px;
 `;
 
@@ -243,7 +244,7 @@ const MsgInput = styled.input`
 const ChatBox = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
+  /* justify-content: flex-end; */
   width: auto;
   max-width: 250px;
   height: auto;
