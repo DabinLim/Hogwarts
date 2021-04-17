@@ -34,6 +34,11 @@ const userSlice = createSlice({
     },
     setChat: (state, action) => {
       state.chat_content = action.payload
+    },
+    updateUserInfo: (state,action) => {
+      state.user.userName = action.payload.userName;
+      state.userProfile = action.payload.userProfile;
+      state.userInterested = action.payload.userInterested;
     }
   },
 });
@@ -177,7 +182,7 @@ const addInterSV = (interested) => {
   }
 }
 
-export const { setChat, setUser, logOut, setSignUp, addInterested } = userSlice.actions;
+export const { setChat, setUser, logOut, setSignUp, addInterested, updateUserInfo } = userSlice.actions;
 
 export const api = {
   loginCheck,
