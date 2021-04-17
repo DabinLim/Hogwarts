@@ -10,53 +10,51 @@ const imgSlice = createSlice({
         preview: false,
     },
     reducers: {
-        upload_img: (state, action) => {
-            state.img_url = action.payload.img_url;
-            state.uploading = false;
-        },
-        uploading: (state, action) => {
-            state.uploading = action.payload.uploading;
-        },
+        // upload_img: (state, action) => {
+        //     state.img_url = action.payload.img_url;
+        //     state.uploading = false;
+        // },
+        // uploading: (state, action) => {
+        //     state.uploading = action.payload.uploading;
+        // },
         set_preview: (state, action) => {
-            console.log(action.payload)
             state.preview = action.payload;
         },
     },
 });
 
-const uploadImgDB = (img, user_id) => {
-    return function (dispatch) {
-        const img_list = {
-            url: "/api/profileimg",
-            method: "POST",
-            data: {
-                userProfile: img,
-                user_id: user_id,
-            },
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json;charset=UTF-8",
-            },
-        };
-        axios(img_list)
-            .then((response) => {
-                console.log(response.data);
-                window.alert("회원가입이 완료되었습니다.");
-            })
-            .catch((error) => {
-                console.log(error);
-                if (error.response) {
-                    window.alert(error.response.data);
-                }
-            });
-    };
-};
+// const uploadImgDB = (img, user_id) => {
+//     return function (dispatch) {
+//         const img_list = {
+//             url: "/api/profileimg",
+//             method: "POST",
+//             data: {
+//                 userProfile: img,
+//                 user_id: user_id,
+//             },
+//             headers: {
+//                 Accept: "application/json",
+//                 "Content-Type": "application/json;charset=UTF-8",
+//             },
+//         };
+//         axios(img_list)
+//             .then((response) => {
+//                 console.log(response.data);
+//             })
+//             .catch((error) => {
+//                 console.log(error);
+//                 if (error.response) {
+//                     window.alert(error.response.data);
+//                 }
+//             });
+//     };
+// };
 
 export const { upload_img, uploading, set_preview } = imgSlice.actions;
 
 export const reduximg = {
     // uploadImg,
-    uploadImgDB,
+    // uploadImgDB,
     
 };
 
