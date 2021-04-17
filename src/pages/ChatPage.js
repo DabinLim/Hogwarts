@@ -39,7 +39,6 @@ const ChatPage = (props) => {
   };
 
   const sendMsg = () => {
-
     console.log(msg)
         ws.send(`/pub/api/chat/message`, {token: token}, JSON.stringify({
           type: "TALK",
@@ -48,8 +47,7 @@ const ChatPage = (props) => {
           userName: user_name,
           userProfile: user_profile,
         }));
-
-  
+    msg.current.value = ''
   };
 
   // React.useEffect(() => {
@@ -164,12 +162,12 @@ const ChatPage = (props) => {
               if (v.type === "TALK" && v.userName === user_name) {
                 return (
                   <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                    <ChatBox>
+                    <MyChatBox>
                       {v.userProfile? <Image src={v.userProfile} size="24" /> : <Image src='https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/blankprofile.png?alt=media&token=839ae664-a63d-4e77-92c3-b1030ebde97e' size="24" />}
                       <Text width="auto" NotP margin='auto 0px'>
                         {v.userName} : {v.message}
                       </Text>
-                    </ChatBox>
+                    </MyChatBox>
                   </div>
                 );
               } else if (v.type === "TALK" && v.userName !== user_name) {
@@ -177,12 +175,12 @@ const ChatPage = (props) => {
                   <div
                     style={{ display: "flex", justifyContent: "flex-start" }}
                   >
-                    <ChatBox>
+                    <OthersChatBox>
                     {v.userProfile? <Image src={v.userProfile} size="24" /> : <Image src='https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/blankprofile.png?alt=media&token=839ae664-a63d-4e77-92c3-b1030ebde97e' size="24" />}
                       <Text width="auto" NotP margin='auto 0px'>
                         {v.userName} : {v.message}
                       </Text>
-                    </ChatBox>
+                    </OthersChatBox>
                   </div>
                 );
               } else {
@@ -241,17 +239,32 @@ const MsgInput = styled.input`
     box-sizing: border-box;
 `;
 
-const ChatBox = styled.div`
+const OthersChatBox = styled.div`
   display: flex;
   flex-direction: row;
   /* justify-content: flex-end; */
+  background-color:white;
   width: auto;
   max-width: 250px;
   height: auto;
   padding: 10px;
   margin: 0px 0px 10px 0px;
-  border: 2px solid pink;
-  border-radius: 10px;
+
+  border-radius: 10px 10px 10px 0px;
+`;
+
+const MyChatBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  /* justify-content: flex-end; */
+  background-color: lavender;
+  width: auto;
+  max-width: 250px;
+  height: auto;
+  padding: 10px;
+  margin: 0px 0px 10px 0px;
+
+  border-radius: 10px 10px 0px 10px;
 `;
 
 export default ChatPage;
