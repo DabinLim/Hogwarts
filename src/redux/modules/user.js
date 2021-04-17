@@ -3,6 +3,7 @@ import { deleteCookie, getCookie, setCookie } from "../../shared/Cookie";
 import axios from "axios";
 
 axios.defaults.baseURL = 'http://13.125.21.123';
+axios.defaults.headers.common['token'] = getCookie('is_login')
 
 const userSlice = createSlice({
   name: "user",
@@ -29,7 +30,7 @@ const userSlice = createSlice({
       }
     },
     addInterested: (state,action) => {
-      state.user.userInterested.push(action.payload);
+      state.user.userInterested = action.payload;
     },
     setChat: (state, action) => {
       state.chat_content = action.payload
@@ -40,24 +41,19 @@ const userSlice = createSlice({
 const loginCheck = () => {
   return function (dispatch) {
     if (getCookie("is_login")) {
-      const token=getCookie('is_login')
-      dispatch(
-        setUser({
-          email: "ekqls12",
-          username: "dabin",
-          userInterested: [],
-          userProfile: "https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/blankprofile.png?alt=media&token=839ae664-a63d-4e77-92c3-b1030ebde97e",
-        })
-      );
+      // dispatch(
+      //   setUser({
+      //     email: "ekqls12",
+      //     username: "dabin",
+      //     userInterested: [],
+      //     userProfile: "https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/blankprofile.png?alt=media&token=839ae664-a63d-4e77-92c3-b1030ebde97e",
+      //   })
+      // );
 
       const options = {
         url: "/api/logincheck",
         method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json;charset=UTF-8",
-          token: token
-        },
+        
       };
       axios(options)
         .then((response) => {
@@ -99,10 +95,6 @@ const logInSV = (id, password, history) => {
     const options = {
       url: "/api/login",
       method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json;charset=UTF-8",
-      },
       data: {
         email: id,
         password: password,
@@ -120,6 +112,7 @@ const logInSV = (id, password, history) => {
 
         // 받은 토근을 Cookie에 저장
         
+        axios.defaults.headers.common['token'] = response.data.token
         setCookie("is_login", response.data.token);
         window.alert("로그인 완료");
         history.push('/all')
@@ -128,7 +121,7 @@ const logInSV = (id, password, history) => {
       .catch((error) => {
         console.log(error);
         if (error.response) {
-          window.alert(error.response.data);
+          window.alert(error);
         }
       });
   };
@@ -139,10 +132,6 @@ const registerSV = (email, name, password) => {
     const options = {
       url: "/api/signup",
       method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json;charset=UTF-8",
-      },
       data: {
         email: email,
         userName: name,
@@ -167,18 +156,21 @@ const registerSV = (email, name, password) => {
 const addInterSV = (interested) => {
   return function(dispatch) {
     const token = getCookie('is_login');
+    console.log(token)
     const option = {
       url:'/api/interest',
       method:'POST',
-      header:{
-        token:token,
-      },
+      // header:{
+      //   token:token
+      // },
       data:{
         userInterested:[interested]
       }
     }
     axios(option).then((response) => {
       console.log(response)
+      dispatch(addInterested(response.data.userInterested))
+
     }).catch((error) => {
       console.log(error)
     })
@@ -192,6 +184,7 @@ export const api = {
   logOutSV,
   logInSV,
   registerSV,
+  addInterSV
 };
 
 export default userSlice.reducer;

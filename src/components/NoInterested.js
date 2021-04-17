@@ -4,11 +4,11 @@ import {Text} from '../elements';
 import {useDispatch} from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
+
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import AddIcon from '@material-ui/icons/Add';
-import {addInterested} from '../redux/modules/user';
+
+import {api} from '../redux/modules/user';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -24,7 +24,7 @@ const NoInterested = (props) => {
     const dispatch = useDispatch()
     const { className, visible, maskClosable, closable, onClose} = props;
     const classes = useStyles();
-    const [num, setNum] = React.useState(1);
+
     const [interested, setInterested] = React.useState(null)
     const onMaskClick = (e) => {
         if (e.target === e.currentTarget) {
@@ -40,7 +40,7 @@ const NoInterested = (props) => {
 
     const addInter = () => {
         if(interested){
-            dispatch(addInterested(interested))
+            dispatch(api.addInterSV(interested))
             close()
         }else{
             window.alert('관심사를 설정해주세요')

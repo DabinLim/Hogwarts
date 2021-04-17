@@ -4,14 +4,12 @@ import {Button, Text} from '../elements';
 import {pwdCheck, emailCheck} from '../shared/common';
 import {useDispatch, useSelector} from 'react-redux';
 import {history} from '../redux/configStore';
-import {setUser, api, setSignUp} from '../redux/modules/user';
-import {setCookie, getCookie, deleteCookie} from '../shared/Cookie';
+import {api, setSignUp} from '../redux/modules/user';
+
 
 const Login = (props) => {
     const dispatch = useDispatch()
     // 리덕스 상태 가져오기 실험
-    const user_info = useSelector(state => state.user.user)
-    console.log(user_info)
     const [isLoading, setLoading] = React.useState(false)
     const [id, setId] = React.useState('')
     const [password, setPassword] = React.useState('')

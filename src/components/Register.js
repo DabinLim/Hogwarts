@@ -2,10 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import {Button, Text} from '../elements';
 import {nameCheck, emailCheck, pwdCheck} from '../shared/common';
-import {history} from '../redux/configStore';
-import { setCookie } from '../shared/Cookie';
+
 import {setSignUp, api} from '../redux/modules/user';
-import {useSelector, useDispatch} from 'react-redux';
+import {useDispatch} from 'react-redux';
 
 const Register = (props) => {
     const dispatch = useDispatch()

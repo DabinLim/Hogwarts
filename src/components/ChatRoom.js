@@ -1,9 +1,9 @@
-import axios from 'axios';
+
 import React from 'react';
 import styled from 'styled-components';
 import {Text, Image} from '../elements';
 import {history} from '../redux/configStore';
-import { getCookie } from '../shared/Cookie';
+
 
 const ChatRoom = (props) => {
         console.log(props)
@@ -12,7 +12,7 @@ const ChatRoom = (props) => {
         <React.Fragment>
             <Container>
                 <Title onClick={()=>{history.push('/chatpage/'+props.room_info.roomId)}}>
-                ({props.room_info.userInterested}){props.room_info.name}
+                ({props.room_info.userInterested}){props.room_info.roomName}
                 </Title>
                 <TextBox>
                     <Text margin='0px' bold>참여인원</Text>
@@ -24,7 +24,7 @@ const ChatRoom = (props) => {
                     <Image margin='0px' size='24'/>
                     <Text >{props.room_info.members[1]}</Text>
                     </CrewBox> */}
-                    <Text>{props.userCount}명 참여중</Text>
+                    <Text>{props.room_info.userCount}명 참여중</Text>
                 </TextBox>
             </Container>
         </React.Fragment>

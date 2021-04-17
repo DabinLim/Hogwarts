@@ -3,12 +3,10 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
+
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import Stomp from "stompjs";
-import SockJS from "sockjs-client";
-import { getCookie } from "../shared/Cookie";
+
 import { api } from "../redux/modules/chat";
 import { Input, Button, Text } from "../elements";
 
