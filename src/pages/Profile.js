@@ -65,7 +65,6 @@ const Profile = (props) => {
 
   const saveprofile = () => {
     const interest = [interest1, interest2, interest3];
-    dispatch(reduxprofile.updateProfile(null, name, interest));
     // if (preview === "https://i.ibb.co/MDKhN7F/kakao-11.jpg") {
     //   console.log("이미지 없는 상태로 PUT")
     //   dispatch(reduxprofile.updateProfile(null, name, interest))
@@ -73,6 +72,29 @@ const Profile = (props) => {
     //   console.log("test")
     //   dispatch((preview, name, interest));
     // }
+    const many = {};
+    if (interest1 !== "") {
+      many[interest1] = (many[interest1] || 0) + 1;
+    }
+    if (interest2 !== "") {
+      many[interest2] = (many[interest2] || 0) + 1;
+    }
+    if (interest3 !== "") {
+      many[interest3] = (many[interest3] || 0) + 1;
+    }
+    for (const key in many) {
+      if (many[key] !== 1) {
+        window.alert("중복된 관심사가 있습니다. 다시 확인해주세요.");
+        return;
+      }
+    }
+    if (Object.keys(many).length === 0) {
+      window.alert("관심사를 한 개 이상 선택해 주세요.");
+    }
+    if (!name) {
+      window.alert("닉네임을 입력해주세요.");
+    }
+    // dispatch(reduxprofile.updateProfile(null, name, interest));
   };
 
   const namechange = (event) => {
@@ -107,6 +129,7 @@ const Profile = (props) => {
                   value={name}
                   onChange={namechange}
                   placeholder="닉네임"
+                  maxLength="10"
                 />
               </Nickdiv>
               <Interdiv>
