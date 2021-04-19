@@ -5,8 +5,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import { useDispatch, useSelector } from "react-redux";
-import { set_preview } from "../redux/modules/image";
-import { reduxprofile } from "../redux/modules/profile";
+import { reduxprofile, set_preview } from "../redux/modules/profile";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -19,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Profile = (props) => {
+  const {history} = props;
   const fileInput = useRef();
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -27,10 +27,9 @@ const Profile = (props) => {
   const [interest2, setinterest2] = useState("");
   const [interest3, setinterest3] = useState("");
   const user_info = useSelector((state) => state.profile.user_data);
-  const [preview, setPreview] = useState(
-    "https://i.ibb.co/MDKhN7F/kakao-11.jpg"
-  );
-  // const preview = useSelector((state) => state.image.preview);
+  const [previewimg, setPreviewimg] = useState();
+  const preview = useSelector((state) => state.profile.user_img);
+  const [imgchk, setImgchk] = useState(true);
 
   //프로필 가져오기
   useEffect(() => {
@@ -48,22 +47,25 @@ const Profile = (props) => {
     setinterest2(user_info.userInterested[1]);
     setinterest3(user_info.userInterested[2]);
     setName(user_info.userName);
-    setPreview(user_info.userProfile);
   }, [user_info]);
 
   //파일선택
   const selectFile = (e) => {
-    // console.log(fileInput.current.files[0]);
     const reader = new FileReader();
     const file = fileInput.current.files[0];
+    if (!file) {
+      return;
+    }
     reader.readAsDataURL(file);
     reader.onloadend = () => {
-      // console.log(reader.result);
+      setPreviewimg(file);
       dispatch(set_preview(reader.result));
     };
+    setImgchk(false);
   };
 
   const saveprofile = () => {
+    console.log(preview);
     const interest = [interest1, interest2, interest3];
     // if (preview === "https://i.ibb.co/MDKhN7F/kakao-11.jpg") {
     //   console.log("이미지 없는 상태로 PUT")
@@ -73,6 +75,10 @@ const Profile = (props) => {
     //   dispatch((preview, name, interest));
     // }
     const many = {};
+    if (!imgchk) {
+      window.alert("이미지 업로드를 해주세요.");
+      return;
+    }
     if (interest1 !== "") {
       many[interest1] = (many[interest1] || 0) + 1;
     }
@@ -90,11 +96,13 @@ const Profile = (props) => {
     }
     if (Object.keys(many).length === 0) {
       window.alert("관심사를 한 개 이상 선택해 주세요.");
+      return;
     }
     if (!name) {
       window.alert("닉네임을 입력해주세요.");
+      return;
     }
-    // dispatch(reduxprofile.updateProfile(null, name, interest));
+    dispatch(reduxprofile.updateProfile(preview, name, interest));
   };
 
   const namechange = (event) => {
@@ -113,6 +121,11 @@ const Profile = (props) => {
     setinterest3(event.target.value);
   };
 
+  const test = () => {
+    dispatch(reduxprofile.uploadImg(previewimg));
+    setImgchk(true);
+  };
+
   return (
     <Fragment>
       <Full>
@@ -121,6 +134,7 @@ const Profile = (props) => {
             <Imgdiv>
               <Image size="200" src={preview ? preview : `${props.img}`} />
               <Imgchange type="file" ref={fileInput} onChange={selectFile} />
+              <button onClick={test}>이미지 업로드</button>
             </Imgdiv>
             <Profilechg>
               <Nickdiv>
@@ -194,7 +208,10 @@ const Profile = (props) => {
           <Clickdiv1>
             <Clickdiv2>
               <Savebtn onClick={saveprofile}>저장하기</Savebtn>
-              <Cancelbtn>돌아가기</Cancelbtn>
+              <Cancelbtn onClick={()=>{
+                history.replace('/')
+              }}
+              >돌아가기</Cancelbtn>
             </Clickdiv2>
           </Clickdiv1>
         </Div1>
@@ -242,6 +259,10 @@ const Full = styled.div`
 
 const Div2 = styled.div`
   display: flex;
+  @media only screen and (max-width: 850px) {
+    flex-direction: column;
+  }
+  flex-direction: row;
 `;
 
 const Div1 = styled.div`
@@ -253,6 +274,7 @@ const Div1 = styled.div`
 const Imgdiv = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
 `;
 
 const Imgchange = styled.input`
@@ -266,6 +288,10 @@ const Profilechg = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 20px;
+  width: 500px;
+  @media only screen and (max-width: 850px) {
+    width: 300px;
+  }
 `;
 
 const Nickdiv = styled.div`
@@ -287,7 +313,7 @@ const Nickedit = styled.input`
   padding: 5px;
   border: 1px solid;
   border-radius: 7px;
-  width: 25vw;
+  width: auto;
   padding: 10px;
 `;
 

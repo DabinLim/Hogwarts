@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { deleteCookie, getCookie, setCookie } from "../../shared/Cookie";
+import { getCookie} from "../../shared/Cookie";
 import { updateUserInfo } from "./user";
 import axios from "axios";
 
@@ -11,13 +11,18 @@ const profileSlice = createSlice({
   name: "profile",
   initialState: {
     user_data: [],
+    user_img: "https://i.ibb.co/MDKhN7F/kakao-11.jpg",
   },
   reducers: {
     GET_PROFILE: (state, action) => {
       state.user_data = action.payload;
+      state.user_img = action.payload.userProfile;
     },
     UPDATE_PROFILE: (state, action) => {
       state.uploading = action.payload.uploading;
+    },
+    set_preview: (state, action) => {
+      state.user_img = action.payload;
     },
   },
 });
@@ -31,6 +36,26 @@ const getProfile = () => {
     axios(get_DB)
       .then((res) => {
         dispatch(GET_PROFILE(res.data));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
+const uploadImg = (img) => {
+  return function (dispatch) {
+    let formData = new FormData();
+    formData.append("file", img);
+    const img_data = {
+      url: "/api/upload/",
+      method: "POST",
+      data: formData,
+    };
+    axios(img_data)
+      .then((res) => {
+        console.log(res.data);
+        dispatch(set_preview(res.data));
       })
       .catch((err) => {
         console.log(err);
@@ -52,7 +77,7 @@ const updateProfile = (preview, name, interest) => {
     axios(update_profile)
       .then(() => {
         dispatch(updateUserInfo(update_profile.data));
-        window.alert("프로필이 수정되었습니다.")
+        window.alert("프로필이 수정되었습니다.");
       })
       .catch((err) => {
         console.log(err);
@@ -60,11 +85,16 @@ const updateProfile = (preview, name, interest) => {
   };
 };
 
-export const { GET_PROFILE, UPDATE_PROFILE } = profileSlice.actions;
+export const {
+  GET_PROFILE,
+  UPDATE_PROFILE,
+  set_preview,
+} = profileSlice.actions;
 
 export const reduxprofile = {
   getProfile,
   updateProfile,
+  uploadImg,
 };
 
 export default profileSlice.reducer;
