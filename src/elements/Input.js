@@ -78,6 +78,7 @@ Input.defaultProps = {
     width: 100%;
     padding: 12px 4px;
     box-sizing: border-box;
+
   `;
   
   export default Input;
