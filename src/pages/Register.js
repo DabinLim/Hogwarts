@@ -4,10 +4,12 @@ import {Input, Button, Text} from '../elements';
 import {history} from '../redux/configStore';
 import {pwdCheck, emailCheck, nameCheck} from '../shared/common';
 import {api as userActions} from '../redux/modules/user';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 const Register = (props) => {
     const dispatch = useDispatch();
+
+    const loading = useSelector(state => state.user.loading)
 
     const [email, setEmail] = React.useState('');
     const [nickname, setNickname] = React.useState('');
@@ -49,14 +51,14 @@ const Register = (props) => {
                     {!nameCheck(nickname) && <Warn>1~10글자의 영문자 또는 한글이름을 설정하세요.</Warn>}
                     </InputBox>
                     <InputBox>
-                    <Input _onChange={(e)=>{setPassword(e.target.value)}} placeholder='비밀번호를 입력하세요' label='Password'/>
+                    <Input type='password' _onChange={(e)=>{setPassword(e.target.value)}} placeholder='비밀번호를 입력하세요' label='Password'/>
                     {!pwdCheck(password) && <Warn>영문자,숫자,특수문자를 조합하여 8~16자리의 비밀번호를 입력하세요.</Warn>}
                     </InputBox>
                     <InputBox>
-                    <Input _onChange={(e)=>{setConfirmPwd(e.target.value)}} placeholder='비밀번호를 다시 한번 입력하세요' label='Password Confirm'/>
+                    <Input type='password' _onChange={(e)=>{setConfirmPwd(e.target.value)}} placeholder='비밀번호를 다시 한번 입력하세요' label='Password Confirm'/>
                     {password !== confirmPwd && <Warn>비밀번호가 일치하지 않습니다.</Warn>}
                     </InputBox>
-                    <Button margin='30px 0px 0px 0px'_onClick={SignUp}><Text bold NotP color='white'>Sign Up</Text></Button>
+                    <Button _disabled={loading} margin='30px 0px 0px 0px'_onClick={SignUp}><Text bold NotP color='white'>Sign Up</Text></Button>
                     </InputContainer>
                     <Text bold color='white' cursor='pointer' _onClick={()=> {history.push('/login')}}>이미 아이디가 있다면</Text>
                 </Container>

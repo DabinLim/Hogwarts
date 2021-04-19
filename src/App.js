@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import React from 'react';
 import styled from 'styled-components';
@@ -8,20 +7,27 @@ import {useSelector, useDispatch} from 'react-redux';
 import {history} from './redux/configStore';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Home from './pages/Home';
 import { getCookie } from './shared/Cookie';
 import { api as userActions } from './redux/modules/user'; 
+import Header from './components/Header';
 
 function App() {
   const dispatch = useDispatch();
   const is_login = useSelector(state => state.user.is_login);
   const token = getCookie('access-token');
+  const user = useSelector(state => state.user.user);
+    let user_house;
+    if(user){
+        user_house = user.user_house;
+    }
   
   React.useEffect(()=> {
     if(!is_login && token) {
       dispatch(userActions.loginCheck(history));
     }
 
-    if(!token) {
+    if((!token && history.location.pathname !== '/login') && (!token && history.location.pathname !== '/register')) {
       window.alert('로그인 상태가 아닙니다.')
       history.push('/login')
     }
@@ -29,9 +35,11 @@ function App() {
 
   return (
     <React.Fragment>
+        {token && <Header user_house={user_house}/>}
       <Container>
       <BrowserRouter>
       <ConnectedRouter history={history}>
+        <Route exact path='/' component={Home}/>
         <Route exact path='/login' component={Login}/>
         <Route exact path='/register' component={Register}/>
       </ConnectedRouter>

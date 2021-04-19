@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Input, Button, Text} from '../elements';
+import {Input, Button, Text, Image} from '../elements';
 import {history} from '../redux/configStore';
 import {pwdCheck, emailCheck} from '../shared/common';
 import {api as userActions} from '../redux/modules/user';
@@ -41,10 +41,15 @@ const Login = (props) => {
                     {!emailCheck(email) && <Warn>이메일 형식에 맞지 않습니다.</Warn>}
                     </InputBox>
                     <InputBox>
-                    <Input _onChange={(e)=>{setPassword(e.target.value)}} placeholder='비밀번호를 입력하세요' label='Password'/>
+                    <Input type='password' _onChange={(e)=>{setPassword(e.target.value)}} placeholder='비밀번호를 입력하세요' label='Password'/>
                     {!pwdCheck(password) && <Warn>영문자,숫자,특수문자를 조합하여 8~16자리의 비밀번호를 입력하세요.</Warn>}
                     </InputBox>
-                    <Button _disabled={loading} _onClick={SignIn}><Text bold NotP color='white'>Log In</Text></Button>
+                    <Button margin='30px 0px 0px 0px' padding='6px 0px' _disabled={loading} _onClick={SignIn}>
+                        <LoginButton>
+                        <Text width='auto' bold NotP color='white'>Alohomora</Text>
+                        <Image size='24' src='https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/alohomora.png?alt=media&token=9e67e5ce-6855-48bf-a447-a86022dcd895'/>
+                        </LoginButton>
+                        </Button>
                     </InputContainer>
                     <Text bold color='white' cursor='pointer' _onClick={()=> {history.push('/register')}}>아직 아이디가 없다면</Text>
                 </Container>
@@ -85,6 +90,15 @@ const InputBox = styled.div`
     width:auto;
     height:auto;
     margin: 0px 0px 10px 0px;
+`;
+
+const LoginButton = styled.div`
+    width:100%;
+    height:100%;
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+    justify-content:center;
 `;
 
 const InputContainer = styled.div`
