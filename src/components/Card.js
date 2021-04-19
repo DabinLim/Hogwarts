@@ -1,25 +1,51 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Image, Text} from '../elements'; 
+import {Text, Button} from '../elements'; 
 
 const Card = (props) => {
-    
+    console.log(props)
     return(
         <React.Fragment>
             <Container>
-                <Image shape='rectangle' src={props.image}/>
-                <Text color='white'>{props.title}</Text>
-                <Text color='white' >{props.button}</Text>
+                <Image margin='4px 0px'shape='rectangle' src={props.image}/>
+                <Description>
+                <Text margin='auto' size='40px' bold color='white'>{props.title}</Text>
+                {props.des.map(v => {
+                    return(
+                        <Text size='20px' color='white' bold >{v}</Text>
+                    )
+                })}
+                <Button margin='auto' width='60%' color='white' main><Text color='white' bold margin='3px 0px'>{props.button}</Text></Button>
+                </Description>
             </Container>
         </React.Fragment>
     )
 }
 
 const Container = styled.div`
-    width:auto;
-    height:100%;
+    width:80%;
+    min-width:800px;
+    min-height:400px;
+    display:flex;
+    flex-direction:row;
+    margin: 20px 0px;
+    background-color: rgba(0,0,0,0.7);
+    border-radius:20px;
+    overflow:hidden;
+`;
+
+
+const Description = styled.div`
     display:flex;
     flex-direction:column;
+    box-sizing:border-box;
+    margin: 0px 40px;
+`;
+
+const Image = styled.img`
+    width:100%;
+    max-width:600px;
+    min-width:400px;
 `;
 
 export default Card;

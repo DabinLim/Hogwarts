@@ -42,7 +42,7 @@ const loginCheck = (history) => {
             email:'ekqls2143@naver.com',
             nickname:'dabin',
             profile_img:'https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/blank_profile_hog.png?alt=media&token=8b2c2cd8-5ffc-4f81-a8cd-f1acfd108d95',
-            user_house:'Gryffindor'
+            user_house:'Slytherin'
         }))
 
         // axios.get('/api/logincheck').then((response) => {
@@ -62,7 +62,7 @@ const loginSV = (email, password, history) => {
             email:email,
             nickname:'dabin',
             profile_img:'https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/blank_profile_hog.png?alt=media&token=8b2c2cd8-5ffc-4f81-a8cd-f1acfd108d95',
-            user_house:'Gryffindor'
+            user_house:'Slytherin'
         }))
         setLoading(false)
         window.alert('로그인 완료')

@@ -2,12 +2,14 @@ import React from "react";
 import styled from "styled-components";
 
 const Button = (props) => {
-  const { text, _onClick, is_float, children, margin, width, padding, is_alert, _disabled, cursor} = props;
+  console.log(props)
+  const { text, _onClick, is_float, children, margin, width, padding, is_alert, _disabled, cursor, color, main} = props;
   const styles = {
     margin: margin,
     width: width,
     padding: padding,
     cursor: cursor,
+    color:color,
   }
   if (is_float) {
     return (
@@ -20,6 +22,14 @@ const Button = (props) => {
     return (
       <React.Fragment>
         <NotiButton style={styles}onClick={_onClick}>{text? text : children}</NotiButton>
+      </React.Fragment>
+    )
+  }
+
+  else if (main){
+    return (
+      <React.Fragment>
+        <MainButton style={styles}onClick={_onClick}>{text? text : children}</MainButton>
       </React.Fragment>
     )
   }
@@ -42,11 +52,25 @@ Button.defaultProps = {
   padding: '12px 0px',
   _disabled:false,
   cursor:'',
+  color: 'white',
+  main: false,
 };
+
+const MainButton = styled.button`
+  width: ${(props) => props.width};
+  color: ${(props) => props.color};
+  background-color: #6a63b5;
+  padding: ${(props) => props.padding};
+  cursor: ${(props) => props.cursor};
+  border-radius: 40px;
+  box-sizing: border-box;
+  border: none;
+  ${(props) => (props.margin? `margin: ${props.margin};` : ``)};
+`;
 
 const ElButton = styled.button`
   width: ${(props) => props.width};
-  color: white;
+  color: ${(props) => props.color};
   background-color: #082e49;
   padding: ${(props) => props.padding};
   cursor: ${(props) => props.cursor};

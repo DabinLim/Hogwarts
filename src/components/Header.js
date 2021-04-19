@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Text} from '../elements';
+import {Image, Text} from '../elements';
 import {useDispatch} from 'react-redux';
 import {api as userActions} from '../redux/modules/user';
 import { history } from '../redux/configStore';
@@ -11,26 +11,28 @@ const Header = (props) => {
     console.log(props)
 
     const signOut = () => {
-        dispatch(userActions.logOutSV(history));
+        if(window.confirm('집으로 돌아가시겠습니까? ( 로그아웃 됩니다. )')){
+            dispatch(userActions.logOutSV(history));
+        }
     }
 
 
     return(
         <React.Fragment>
-            <Container>
+
                 <HeaderContainer>
                     <None/>
                     <Logo/>
                     <ButtonContainer>
                     <House {...props}/>
-                    <Text _onClick={signOut}color='white'>로그아웃</Text>
+                    <Image _onClick={signOut} cursor='pointer' size='44' src='https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/Expresso-Hogwarts-Harry-Potter-PNG-removebg-preview.png?alt=media&token=999a9382-5c7f-4201-ad9a-3e8f8e3b54e3'/>
                     </ButtonContainer>
                 </HeaderContainer>
-                <NavigationBox>
+                {/* <NavigationBox>
                     <Navigation>
                     </Navigation>
-                </NavigationBox>
-            </Container>
+                </NavigationBox> */}
+
         </React.Fragment>
     )
 }
@@ -39,26 +41,23 @@ Header.defaultProps = {
     user_house:null
 }
 
-const Container = styled.div`
-    display: flex;
-    flex-direction:column;
-    align-items:center;
-    width:100%;
-    height:140px;
-`;
 
 const HeaderContainer = styled.div`
+    position:fixed;
+    top:0;
+    left:0;
     display: flex;
     flex-direction:row;
     align-items:center;
     justify-content:space-between;
     width:100%;
     height:80px;
-    background-color: #242633;
+    background-image:url('https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/star.png?alt=media&token=d65daa3b-0e60-43ad-a89e-07bd591ac545');
+    background-size:cover;
 `;
 
 const None = styled.div`
-    width:300px;
+    width:320px;
     height:10px;
 `;
 
@@ -75,11 +74,12 @@ const ButtonContainer = styled.div`
     flex-direction:row;
     align-items:center;
     justify-content:flex-end;
+    padding-right: 20px;
     width:300px;
 `;
 
 const House = styled.div`
-    width:120px;
+    width:60px;
     height:40px;
     ${props => props.user_house === 'Gryffindor' && `background-image:url('https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/Gryffindor_ClearBG.png?alt=media&token=d374773d-e337-416b-8761-4f60005863ea');`}
     ${(props) => props.user_house === 'Slytherin' && `background-image:url('https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/Slytherin_ClearBG.png?alt=media&token=2e3778ee-9486-4426-b602-26f2fcfc9499');`};
@@ -92,24 +92,26 @@ const House = styled.div`
 `;
 
 
-const NavigationBox = styled.div`
-    background-color: #10141c;
-    width:100%;
-    height:60px;
-    display:flex;
-    justify-content:center;
-`;
 
-const Navigation = styled.div`
-    background-color: #10141c;
-    width:100%;
-    max-width:1000px;
-    height:60px;
-    display:flex;
-    flex-direction:row;
-    align-items:center;
-    justify-content:space-between;
-    border:1px solid white;
-`;
+
+// const NavigationBox = styled.div`
+//     background-color: #10141c;
+//     width:100%;
+//     height:60px;
+//     display:flex;
+//     justify-content:center;
+// `;
+
+// const Navigation = styled.div`
+//     background-color: #10141c;
+//     width:100%;
+//     max-width:1000px;
+//     height:60px;
+//     display:flex;
+//     flex-direction:row;
+//     align-items:center;
+//     justify-content:space-between;
+//     border:1px solid white;
+// `;
 
 export default Header;

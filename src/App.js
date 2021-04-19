@@ -36,7 +36,7 @@ function App() {
   return (
     <React.Fragment>
         {token && <Header user_house={user_house}/>}
-      <Container>
+      <Container token={token}>
       <BrowserRouter>
       <ConnectedRouter history={history}>
         <Route exact path='/' component={Home}/>
@@ -50,6 +50,7 @@ function App() {
 }
 
 const Container = styled.div`
+  ${(props) => props.token && `padding-top:80px;`}
   width:100vw;
   height:100vh;
 `;
