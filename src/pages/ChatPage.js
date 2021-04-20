@@ -162,12 +162,16 @@ const ChatPage = (props) => {
               if (v.type === "TALK" && v.userName === user_name) {
                 return (
                   <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                    <MyChatBox>
+                    <ChatBox>
+                    <MsgBox>
                       {v.userProfile? <Image src={v.userProfile} size="24" /> : <Image src='https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/blankprofile.png?alt=media&token=839ae664-a63d-4e77-92c3-b1030ebde97e' size="24" />}
                       <Text width="auto" NotP margin='auto 0px'>
                         {v.userName} : {v.message}
                       </Text>
-                    </MyChatBox>
+                    </MsgBox>
+                    <div style={{display:'flex',flexDirection:'row',justifyContent:"flex-end"}}><Text width='auto' size='12px' NotP margin='0px 0px 4px 0px'>{v.timenow}</Text></div>
+                      
+                    </ChatBox>
                   </div>
                 );
               } else if (v.type === "TALK" && v.userName !== user_name) {
@@ -175,12 +179,16 @@ const ChatPage = (props) => {
                   <div
                     style={{ display: "flex", justifyContent: "flex-start" }}
                   >
-                    <OthersChatBox>
-                    {v.userProfile? <Image src={v.userProfile} size="24" /> : <Image src='https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/blankprofile.png?alt=media&token=839ae664-a63d-4e77-92c3-b1030ebde97e' size="24" />}
+                    <ChatBox>
+                    <OthersMsgBox>
+                      {v.userProfile? <Image src={v.userProfile} size="24" /> : <Image src='https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/blankprofile.png?alt=media&token=839ae664-a63d-4e77-92c3-b1030ebde97e' size="24" />}
                       <Text width="auto" NotP margin='auto 0px'>
                         {v.userName} : {v.message}
                       </Text>
-                    </OthersChatBox>
+                    </OthersMsgBox>
+                    <div style={{display:'flex',flexDirection:'row',justifyContent:"flex-start"}}><Text width='auto' size='12px' NotP margin='0px 0px 4px 4px'>{v.timenow}</Text></div>
+                      
+                    </ChatBox>
                   </div>
                 );
               } else {
@@ -194,7 +202,11 @@ const ChatPage = (props) => {
           </ContentBox>
         </Content>
         <TextBox>
-          <MsgInput type='text' ref={msg} placeholder='텍스트를 입력해라'/>
+          <MsgInput type='text' ref={msg} placeholder='텍스트를 입력해라' onKeyPress={(e)=>{
+            if(e.key === 'Enter'){
+              sendMsg()
+            }
+          }}/>
           <Button _onClick={sendMsg} width="60px">
             전송
           </Button>
@@ -239,7 +251,7 @@ const MsgInput = styled.input`
     box-sizing: border-box;
 `;
 
-const OthersChatBox = styled.div`
+const OthersMsgBox = styled.div`
   display: flex;
   flex-direction: row;
   /* justify-content: flex-end; */
@@ -248,23 +260,28 @@ const OthersChatBox = styled.div`
   max-width: 250px;
   height: auto;
   padding: 10px;
-  margin: 0px 0px 10px 0px;
+  margin: 0px;
 
   border-radius: 10px 10px 10px 0px;
 `;
 
-const MyChatBox = styled.div`
+const ChatBox = styled.div`
+  display:flex;
+  flex-direction:column;
+`;
+
+const MsgBox = styled.div`
   display: flex;
   flex-direction: row;
-  /* justify-content: flex-end; */
   background-color: lavender;
   width: auto;
   max-width: 250px;
   height: auto;
   padding: 10px;
-  margin: 0px 0px 10px 0px;
+  margin: 0px;
 
   border-radius: 10px 10px 0px 10px;
+  /* justify-content: flex-end; */
 `;
 
 export default ChatPage;
