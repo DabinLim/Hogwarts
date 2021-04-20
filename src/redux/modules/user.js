@@ -37,8 +37,8 @@ const userSlice = createSlice({
     },
     updateUserInfo: (state,action) => {
       state.user.userName = action.payload.userName;
-      state.userProfile = action.payload.userProfile;
-      state.userInterested = action.payload.userInterested;
+      state.user.userProfile = action.payload.userProfile;
+      state.user.userInterested = action.payload.userInterested;
     }
   },
 });

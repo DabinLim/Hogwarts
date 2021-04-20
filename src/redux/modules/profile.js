@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { deleteCookie, getCookie, setCookie } from "../../shared/Cookie";
+import { getCookie } from "../../shared/Cookie";
 import { updateUserInfo } from "./user";
 import axios from "axios";
 
@@ -11,13 +11,18 @@ const profileSlice = createSlice({
   name: "profile",
   initialState: {
     user_data: [],
+    user_img: "https://i.ibb.co/MDKhN7F/kakao-11.jpg",
   },
   reducers: {
     GET_PROFILE: (state, action) => {
       state.user_data = action.payload;
+      state.user_img = action.payload.userProfile;
     },
     UPDATE_PROFILE: (state, action) => {
       state.uploading = action.payload.uploading;
+    },
+    set_preview: (state, action) => {
+      state.user_img = action.payload;
     },
   },
 });
@@ -38,8 +43,32 @@ const getProfile = () => {
   };
 };
 
-const updateProfile = (preview, name, interest) => {
+const updateProfileimg = (preview, name, interest, img) => {
   return function (dispatch) {
+    if (!img) {
+      dispatch(updateProfile(preview, name, interest));
+      return;
+    }
+    let formData = new FormData();
+    formData.append("file", img);
+    const img_data = {
+      url: "/api/upload/",
+      method: "POST",
+      data: formData,
+    };
+    axios(img_data)
+      .then((res) => {
+        console.log(res.data);
+        dispatch(updateProfile(res.data, name, interest));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
+const updateProfile = (preview, name, interest) => {
+  return function (dispatch, getState, {history}) {
     const update_profile = {
       url: "/api/profile/",
       method: "PUT",
@@ -53,6 +82,7 @@ const updateProfile = (preview, name, interest) => {
       .then(() => {
         dispatch(updateUserInfo(update_profile.data));
         window.alert("프로필이 수정되었습니다.")
+        history.push("/all")
       })
       .catch((err) => {
         console.log(err);
@@ -60,11 +90,16 @@ const updateProfile = (preview, name, interest) => {
   };
 };
 
-export const { GET_PROFILE, UPDATE_PROFILE } = profileSlice.actions;
+export const {
+  GET_PROFILE,
+  UPDATE_PROFILE,
+  set_preview,
+} = profileSlice.actions;
 
 export const reduxprofile = {
   getProfile,
   updateProfile,
+  updateProfileimg,
 };
 
 export default profileSlice.reducer;
