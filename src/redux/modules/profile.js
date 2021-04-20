@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getCookie} from "../../shared/Cookie";
+import { getCookie } from "../../shared/Cookie";
 import { updateUserInfo } from "./user";
 import axios from "axios";
 
@@ -43,8 +43,12 @@ const getProfile = () => {
   };
 };
 
-const uploadImg = (img) => {
+const updateProfileimg = (preview, name, interest, img) => {
   return function (dispatch) {
+    if (!img) {
+      dispatch(updateProfile(preview, name, interest));
+      return;
+    }
     let formData = new FormData();
     formData.append("file", img);
     const img_data = {
@@ -55,7 +59,7 @@ const uploadImg = (img) => {
     axios(img_data)
       .then((res) => {
         console.log(res.data);
-        dispatch(set_preview(res.data));
+        dispatch(updateProfile(res.data, name, interest));
       })
       .catch((err) => {
         console.log(err);
@@ -64,7 +68,7 @@ const uploadImg = (img) => {
 };
 
 const updateProfile = (preview, name, interest) => {
-  return function (dispatch) {
+  return function (dispatch, getState, {history}) {
     const update_profile = {
       url: "/api/profile/",
       method: "PUT",
@@ -77,7 +81,8 @@ const updateProfile = (preview, name, interest) => {
     axios(update_profile)
       .then(() => {
         dispatch(updateUserInfo(update_profile.data));
-        window.alert("프로필이 수정되었습니다.");
+        window.alert("프로필이 수정되었습니다.")
+        history.push("/all")
       })
       .catch((err) => {
         console.log(err);
@@ -94,7 +99,7 @@ export const {
 export const reduxprofile = {
   getProfile,
   updateProfile,
-  uploadImg,
+  updateProfileimg,
 };
 
 export default profileSlice.reducer;
