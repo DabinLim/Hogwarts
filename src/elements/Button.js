@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 const Button = (props) => {
-  console.log(props)
   const { text, _onClick, is_float, children, margin, width, padding, is_alert, _disabled, cursor, color, main} = props;
   const styles = {
     margin: margin,

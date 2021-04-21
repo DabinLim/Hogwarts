@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import {Text, Button} from '../elements'; 
 
 const Card = (props) => {
-    console.log(props)
     return(
         <React.Fragment>
             <Container>
@@ -12,10 +11,10 @@ const Card = (props) => {
                 <Text margin='auto' size='40px' bold color='white'>{props.title}</Text>
                 {props.des.map(v => {
                     return(
-                        <Text size='20px' color='white' bold >{v}</Text>
+                        <Text key={v} size='20px' color='white' bold >{v}</Text>
                     )
                 })}
-                <Button margin='auto' width='60%' color='white' main><Text color='white' bold margin='3px 0px'>{props.button}</Text></Button>
+                <Button _onClick={props._onClick}margin='auto' width='60%' color='white' main><Text color='white' bold margin='3px 0px'>{props.button}</Text></Button>
                 </Description>
             </Container>
         </React.Fragment>

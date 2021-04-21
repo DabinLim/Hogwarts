@@ -11,6 +11,7 @@ import Home from './pages/Home';
 import { getCookie } from './shared/Cookie';
 import { api as userActions } from './redux/modules/user'; 
 import Header from './components/Header';
+import House from './pages/House';
 
 function App() {
   const dispatch = useDispatch();
@@ -42,6 +43,7 @@ function App() {
         <Route exact path='/' component={Home}/>
         <Route exact path='/login' component={Login}/>
         <Route exact path='/register' component={Register}/>
+        <Route excat path='/house/:house_name' user_house={user_house} component={House}/>
       </ConnectedRouter>
       </BrowserRouter>
       </Container>

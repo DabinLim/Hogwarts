@@ -24,7 +24,13 @@ const Header = (props) => {
                     <None/>
                     <Logo/>
                     <ButtonContainer>
-                    <House {...props}/>
+                    <House {...props} onClick={() => {
+                        if(props.user_house === null){
+                            window.alert('아직 기숙사를 배정 받지 않으셨습니다. 기숙사를 배정 받으세요.')
+                        } else{
+                            history.push(`/house/${props.user_house}`)
+                        }
+                    }}/>
                     <Image _onClick={signOut} cursor='pointer' size='44' src='https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/Expresso-Hogwarts-Harry-Potter-PNG-removebg-preview.png?alt=media&token=999a9382-5c7f-4201-ad9a-3e8f8e3b54e3'/>
                     </ButtonContainer>
                 </HeaderContainer>
