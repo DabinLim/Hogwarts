@@ -4,7 +4,26 @@ const mongoose = require('mongoose');
 const User = require('./models/user');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
+const app = express();
+const router = express.Router();
+const server = require('http').createServer(app);
+const portNo = 8080
+const io = require('socket.io')(server,{
+    cors:{
+        origin:"*",
+        methods:["GET","POST"],
+    }
+})
 const auth_middleware = require('./middlewares/auth_middleware');
+
+const corsOptions = {
+    origin: "*",
+    credentials: true
+  }
+
+app.use(cors(corsOptions))
+app.use(express.json());
+app.use('/api', express.urlencoded({ extended: false }), router);
   
 
 
@@ -17,17 +36,27 @@ const db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));
 
-const app = express();
-const router = express.Router();
+let connected_num = [];
 
-const corsOptions = {
-    origin: "*",
-    credentials: true
-  }
+io.on('connection', (socket) => {
+    console.log('클라이언트 접속:', socket.client.id);
 
-app.use(cors(corsOptions))
-app.use(express.json());
-app.use('/api', express.urlencoded({ extended: false }), router);
+    socket.on('connected', (msg)=> {
+        connected_num.push(msg)
+        console.log(connected_num)
+        io.emit('connected', connected_num)
+    });
+
+    socket.on('disconnected', (msg)=> {
+        connected_num.pop()
+        io.emit('connected', connected_num)
+    });
+
+    socket.on('chat-msg', (msg) => {
+        io.emit('chat-msg', msg);
+    });
+});
+
 
 router.post('/register', async (req, res) => {
     const { nickname, email, password } = req.body;
@@ -53,9 +82,6 @@ router.post('/register', async (req, res) => {
 
 });
 
-app.listen(8080, () => {
-    console.log('서버가 요청을 받을 준비가 됐어요');
-});
 
 router.post('/auth', async (req, res) => {
     const { email, password } = req.body;
@@ -71,7 +97,6 @@ router.post('/auth', async (req, res) => {
     };
 
     const token = jwt.sign({ userId: user.userId }, 'dab-secret-key');
-    console.log(user)
     res.send({
         email: user.email,
         nickname: user.nickname,
@@ -114,3 +139,7 @@ router.get('/students/:house', auth_middleware, async (req, res) => {
         students
     });
 })
+
+server.listen(portNo, () => {
+    console.log('서버가 준비되었습니다.', 'http://localhost:'+ portNo);
+});
