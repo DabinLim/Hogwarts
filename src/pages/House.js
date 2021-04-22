@@ -3,16 +3,24 @@ import styled from 'styled-components';
 import {response} from '../redux/modules/UserInformation'
 import '../House.css';
 import ProfileCard from '../components/ProfileCard';
+import { api as houseActions } from '../redux/modules/house';
+import {useDispatch, useSelector} from 'react-redux';
 
 const House = (props) => {
+    const dispatch = useDispatch()
     let url = document.location.href.split('/')
     let house_name = url[url.length - 1]
+    const students_list = useSelector(state => state.house.students)
+    console.log(students_list)
+    React.useEffect(() => {
+        dispatch(houseActions.getStudentsSV(house_name));
+    },[])
     
     return(
         <React.Fragment>
             <div className={house_name}>
             <Container>
-                {response.user_list.map((v,idx) => {
+                {students_list.map((v,idx) => {
                     return(
                         <ProfileCard user_list={v} key={idx}/>
                     )

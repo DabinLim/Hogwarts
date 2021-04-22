@@ -161,7 +161,7 @@ const ModalInner = styled.div`
   box-sizing: border-box;
   position: relative;
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.5);
-  background-image: url("https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/sorting.png?alt=media&token=8313f6db-5c9d-4bdf-a5bb-6f9cecee31ff");
+  background-image: url("https://user-images.githubusercontent.com/77574867/115653293-d677c880-a369-11eb-8652-0a5f16024e68.png");
   background-size: cover;
   border-radius: 10px;
   width: 60%;
@@ -189,7 +189,7 @@ const CloseButton = styled.button`
 const HatImage = styled.div`
   width: 20%;
   height: 30%;
-  background-image: url("https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/sorting_hat-removebg-preview.png?alt=media&token=1530d66c-c1b6-4d80-8927-23c995f7189a");
+  background-image: url("https://user-images.githubusercontent.com/77574867/115653292-d5df3200-a369-11eb-93cc-9a5c731460c5.png");
   background-size: contain;
   background-repeat: no-repeat;
   margin: 0px auto 20px auto;

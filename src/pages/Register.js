@@ -71,7 +71,7 @@ const Register = (props) => {
 const Background = styled.div`
     width:100%;
     height:100%;
-    background-image:url('https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/hogwarts.png?alt=media&token=fe8300f9-00e4-4004-b6d8-3df4a6964877');
+    background-image:url('https://user-images.githubusercontent.com/77574867/115653262-cfe95100-a369-11eb-9eb2-6d0d40b5dc78.png');
     background-size:cover;
 `;
 
@@ -90,7 +90,7 @@ const Logo = styled.div`
     
     width:350px;
     height:200px;
-    background-image:url('https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/hogwarts-logo-symbol-meaning-history-evolution-3.png?alt=media&token=af273b7c-af92-491f-910b-bf9dc65bfefd');
+    background-image:url('https://user-images.githubusercontent.com/77574867/115653260-cf50ba80-a369-11eb-8196-0a5704a59331.png');
     background-size: contain;
     background-repeat:no-repeat;
 `;

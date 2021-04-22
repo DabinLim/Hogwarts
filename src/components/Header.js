@@ -22,7 +22,7 @@ const Header = (props) => {
 
                 <HeaderContainer>
                     <None/>
-                    <Logo/>
+                    <Logo onClick={() => {history.push('/')}}/>
                     <ButtonContainer>
                     <House {...props} onClick={() => {
                         if(props.user_house === null){
@@ -31,7 +31,7 @@ const Header = (props) => {
                             history.push(`/house/${props.user_house}`)
                         }
                     }}/>
-                    <Image _onClick={signOut} cursor='pointer' size='44' src='https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/Expresso-Hogwarts-Harry-Potter-PNG-removebg-preview.png?alt=media&token=999a9382-5c7f-4201-ad9a-3e8f8e3b54e3'/>
+                    <Image _onClick={signOut} cursor='pointer' size='44' src='https://user-images.githubusercontent.com/77574867/115653250-ccee6080-a369-11eb-85c2-298f046d7ded.png'/>
                     </ButtonContainer>
                 </HeaderContainer>
                 {/* <NavigationBox>
@@ -49,6 +49,7 @@ Header.defaultProps = {
 
 
 const HeaderContainer = styled.div`
+    z-index:5;
     position:fixed;
     top:0;
     left:0;
@@ -58,7 +59,7 @@ const HeaderContainer = styled.div`
     justify-content:space-between;
     width:100%;
     height:80px;
-    background-image:url('https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/star.png?alt=media&token=d65daa3b-0e60-43ad-a89e-07bd591ac545');
+    background-image:url('https://user-images.githubusercontent.com/77574867/115653295-d7105f00-a369-11eb-83c1-930bfbb86bdc.png');
     background-size:cover;
 `;
 
@@ -70,9 +71,10 @@ const None = styled.div`
 const Logo = styled.div`
     width:150px;
     height:60px;
-    background-image:url('https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/hog-removebg-preview.png?alt=media&token=5a11d7c3-0d4b-4b43-a49b-ec0f7aab2d59');
+    background-image:url('https://user-images.githubusercontent.com/77574867/115653258-ceb82400-a369-11eb-90e7-2715ef9f45d7.png');
     background-size:contain;
     background-repeat:no-repeat;
+    cursor:pointer;
 `;
 
 const ButtonContainer = styled.div`
@@ -87,11 +89,11 @@ const ButtonContainer = styled.div`
 const House = styled.div`
     width:60px;
     height:40px;
-    ${props => props.user_house === 'Gryffindor' && `background-image:url('https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/Gryffindor_ClearBG.png?alt=media&token=d374773d-e337-416b-8761-4f60005863ea');`}
-    ${(props) => props.user_house === 'Slytherin' && `background-image:url('https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/Slytherin_ClearBG.png?alt=media&token=2e3778ee-9486-4426-b602-26f2fcfc9499');`};
-    ${(props) => props.user_house === 'Ravenclaw' && `background-image:url('https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/RavenclawCrest.png?alt=media&token=df0d0bf7-5907-4111-b6b5-a88132380760');`};
-    ${(props) => props.user_house === 'Hufflepuff' && `background-image:url('https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/Hufflepuff_ClearBG.png?alt=media&token=60f89b7b-87e9-482f-8baa-4a1317837d60');`};
-    ${(props) => props.user_house === null && `background-image:url('https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/hogwarts-logo-symbol-meaning-history-evolution-3.png?alt=media&token=af273b7c-af92-491f-910b-bf9dc65bfefd');`};
+    ${props => props.user_house === 'Gryffindor' && `background-image:url('https://user-images.githubusercontent.com/77574867/115653254-cd86f700-a369-11eb-93d3-bfd142bc4c78.png');`}
+    ${(props) => props.user_house === 'Slytherin' && `background-image:url('https://user-images.githubusercontent.com/77574867/115653290-d5469b80-a369-11eb-8e60-477706e02477.png');`};
+    ${(props) => props.user_house === 'Ravenclaw' && `background-image:url('https://user-images.githubusercontent.com/77574867/115653286-d4156e80-a369-11eb-81b1-13ee1b76c6c7.png');`};
+    ${(props) => props.user_house === 'Hufflepuff' && `background-image:url('https://user-images.githubusercontent.com/77574867/115653267-d081e780-a369-11eb-8274-5df5399ec473.png');`};
+    ${(props) => props.user_house === null && `background-image:url('https://user-images.githubusercontent.com/77574867/115653260-cf50ba80-a369-11eb-8196-0a5704a59331.png');`};
     background-size:contain;
     background-repeat:no-repeat;
     cursor:pointer;

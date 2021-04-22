@@ -1,28 +1,28 @@
 .Slytherin {
     width:100%;
     height:100%;
-    background-image:url('https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/slytherin_house.jpeg?alt=media&token=04c4e729-8d6e-41bc-aa02-47ed50dbc41b');
+    background-image:url('https://user-images.githubusercontent.com/77574867/115653291-d5df3200-a369-11eb-9411-226996da41ad.jpeg');
     background-size: cover;
     overflow-y:auto;
 }
 .Gryffindor {
     width:100%;
     height:100%;
-    background-image:url('https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/gryffindor_house.jpeg?alt=media&token=89a5df53-5f10-45d0-9374-3e18ac0c2869');
+    background-image:url('https://user-images.githubusercontent.com/77574867/115653255-ce1f8d80-a369-11eb-8a1a-f447b2344cf0.jpeg');
     background-size: cover;
     overflow-y:auto;
 }
 .Ravenclaw {
     width:100%;
     height:100%;
-    background-image:url('https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/ravenclaw_house.jpeg?alt=media&token=88e34c1b-3998-4725-9f59-bd0a11910660');
+    background-image:url('https://user-images.githubusercontent.com/77574867/115653284-d4156e80-a369-11eb-9220-1ba1d9d917e0.jpeg');
     background-size: cover;
     overflow-y:auto;
 }
 .Hufflepuff {
     width:100%;
     height:100%;
-    background-image:url('https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/hufflepuff_house.jpeg?alt=media&token=bc98bfed-10e0-409c-acd6-9c9d1df58a65');
+    background-image:url('https://user-images.githubusercontent.com/77574867/115653269-d11a7e00-a369-11eb-9374-cafe8e23ca15.jpeg');
     background-size: cover;
     overflow-y:auto;
 }

@@ -47,7 +47,7 @@ const Login = (props) => {
                     <Button margin='30px 0px 0px 0px' padding='6px 0px' _disabled={loading} _onClick={SignIn}>
                         <LoginButton>
                         <Text width='auto' bold NotP color='white'>Alohomora</Text>
-                        <Image size='24' src='https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/alohomora.png?alt=media&token=9e67e5ce-6855-48bf-a447-a86022dcd895'/>
+                        <Image size='24' src='https://user-images.githubusercontent.com/77574867/115653242-c9f37000-a369-11eb-8a70-333f0576b527.png'/>
                         </LoginButton>
                         </Button>
                     </InputContainer>
@@ -62,7 +62,7 @@ const Login = (props) => {
 const Background = styled.div`
     width:100%;
     height:100%;
-    background-image:url('https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/hogwarts.png?alt=media&token=fe8300f9-00e4-4004-b6d8-3df4a6964877');
+    background-image:url('https://user-images.githubusercontent.com/77574867/115653262-cfe95100-a369-11eb-9eb2-6d0d40b5dc78.png');
     background-size:cover;
 `;
 
@@ -81,7 +81,7 @@ const Logo = styled.div`
     
     width:350px;
     height:200px;
-    background-image:url('https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/hogwarts-logo-symbol-meaning-history-evolution-3.png?alt=media&token=af273b7c-af92-491f-910b-bf9dc65bfefd');
+    background-image:url('https://user-images.githubusercontent.com/77574867/115653260-cf50ba80-a369-11eb-8196-0a5704a59331.png');
     background-size: contain;
     background-repeat:no-repeat;
 `;

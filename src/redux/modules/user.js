@@ -3,7 +3,7 @@ import { getCookie, deleteCookie, setCookie } from '../../shared/Cookie';
 import axios from 'axios';
 
 axios.defaults.baseURL = 'http://localhost:8080';
-axios.defaults.headers.common['token'] = getCookie('is_login')
+axios.defaults.headers.common['Authorization'] = getCookie('access-token')
 
 const userSlice = createSlice({
     name:'user',
@@ -41,17 +41,17 @@ const logOutSV = (history) => {
 
 const loginCheck = (history) => {
     return function(dispatch) {
-        dispatch(setUser({
-            email:'ekqls2143@naver.com',
-            nickname:'dabin',
-            profile_img:'https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/blank_profile_hog.png?alt=media&token=8b2c2cd8-5ffc-4f81-a8cd-f1acfd108d95',
-            user_house: null
-        }))
+        // dispatch(setUser({
+        //     email:'ekqls2143@naver.com',
+        //     nickname:'dabin',
+        //     profile_img:'https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/blank_profile_hog.png?alt=media&token=8b2c2cd8-5ffc-4f81-a8cd-f1acfd108d95',
+        //     user_house: null
+        // }))
 
-        // axios.get('/api/logincheck').then((response) => {
-        //     dispatch(setUser(response.data))
-        //     history.push('/')
-        // })
+        axios.get('/api/logincheck').then((response) => {
+            dispatch(setUser(response.data.user))
+            
+        })
     }
 }
 
@@ -60,42 +60,49 @@ const loginSV = (email, password, history) => {
     return function(dispatch) {
         setLoading(true)
 
-        setCookie('access-token', 'success');
-        dispatch(setUser({
-            email:email,
-            nickname:'dabin',
-            profile_img:'https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/blank_profile_hog.png?alt=media&token=8b2c2cd8-5ffc-4f81-a8cd-f1acfd108d95',
-            user_house: null
-        }))
-        setLoading(false)
-        window.alert('로그인 완료')
-        history.push('/')
+        // setCookie('access-token', 'success');
+        // dispatch(setUser({
+        //     email:email,
+        //     nickname:'dabin',
+        //     profile_img:'https://firebasestorage.googleapis.com/v0/b/react-chat-2b875.appspot.com/o/blank_profile_hog.png?alt=media&token=8b2c2cd8-5ffc-4f81-a8cd-f1acfd108d95',
+        //     user_house: null
+        // }))
+        // setLoading(false)
+        // window.alert('로그인 완료')
+        // history.push('/')
 
     
-        // const options = {
-        //     url:'/api/signin',
-        //     method:'POST',
-        //     data:{
-        //         email:email,
-        //         password:password,
-        //     }
-        // }
-        // axios(options).then((response) => {
-        //     let userInfo = {
-        //         email: response.data.email,
-        //         nickname: response.data.nickname,
-        //         profile_img: response.data.profile_img
-        //     }
-        //     axios.defaults.headers.common['token'] = getCookie('is_login')
-        //     setCookie('access-token', response.data.token);
-        //     dispatch(setUser(userInfo))
-        //     setLoading(false)
-        //     window.alert('로그인 완료');
-        //     history.push('/')
-        // }).catch(err => {
-        //     console.log(err)
-        //     setLoading(false)
-        // })
+        const options = {
+            url:'/api/auth',
+            method:'POST',
+            data:{
+                email:email,
+                password:password,
+            }
+        }
+        axios(options).then((response) => {
+            console.log(response.data)
+            let userInfo = {
+                email: response.data.email,
+                nickname: response.data.nickname,
+                profile_img: response.data.profile_img,
+                user_house: response.data.user_house,
+                user_wand: response.data.user_wand,
+                user_patronus: response.data.user_patronus
+            }
+            axios.defaults.headers.common['Authorization'] = response.data.token
+            setCookie('access-token', response.data.token);
+            dispatch(setUser(userInfo))
+            setLoading(false)
+            window.alert('로그인 완료');
+            history.push('/')
+        }).catch(err => {
+            console.log(err)
+            if(err.response.data){
+                window.alert(err.response.data.errorMessage)
+            }
+            setLoading(false)
+        })
     }
 }
 
@@ -119,6 +126,9 @@ const registerSV = (email,nickname,password,history) => {
             history.push('/login')
         }).catch(err => {
             console.log(err)
+            if(err.response.data){
+                window.alert(err.response.data.errorMessage)
+            }
             setLoading(false)
         })
     }
@@ -151,6 +161,22 @@ const setHouseSV = (answer_list, special) => {
                 }
             })
         }
+        
+        const options = {
+            url:'api/edithouse',
+            method:'PUT',
+            data:{
+                new_house:result
+            }
+        }
+        axios(options).then(response => {
+            console.log(response.data)
+        }).catch(err => {
+            console.log(err)
+            if(err.response.data){
+                window.alert(err.response.data.errorMessage)
+            }
+        })
 
         dispatch(setHouse(result))
         window.alert(`${result} 기숙사에 배정되었습니다 ! `);
